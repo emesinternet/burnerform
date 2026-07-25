@@ -175,6 +175,8 @@ before submission. Use the SDK unless you are implementing the
 
 This request is a runnable first check against an existing public form:
 
+{/* prettier-ignore-start */}
+
 <CodeExampleTabs
   groupId="shell"
   examples={[
@@ -185,24 +187,26 @@ This request is a runnable first check against an existing public form:
       code: `FORM_ID="replace-with-form-id"
 
 curl --fail-with-body \\
---header "Accept: application/json" \\
---header "X-Burnerform-Client-Version: 0.1.0" \\
-"https://burnerform.com/api/v1/forms/$FORM_ID"`,
-},
-{
-value: "powershell",
-label: "PowerShell",
-language: "powershell",
-code: `$formId = "replace-with-form-id"
+  --header "Accept: application/json" \\
+  --header "X-Burnerform-Client-Version: 0.1.0" \\
+  "https://burnerform.com/api/v1/forms/$FORM_ID"`,
+    },
+    {
+      value: "powershell",
+      label: "PowerShell",
+      language: "powershell",
+      code: `$formId = "replace-with-form-id"
 $headers = @{
-Accept = "application/json"
-"X-Burnerform-Client-Version" = "0.1.0"
+  Accept = "application/json"
+  "X-Burnerform-Client-Version" = "0.1.0"
 }
 
 Invoke-RestMethod -Uri "https://burnerform.com/api/v1/forms/$formId" -Headers $headers`,
-},
-]}
+    },
+  ]}
 />
+
+{/* prettier-ignore-end */}
 
 A successful response contains `apiVersion: "v1"`, the canonical schema,
 creator public key, schema hash, expiry, response byte limit, and discovery
