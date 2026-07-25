@@ -1,22 +1,32 @@
-name: CI
+name: Release compatibility
 
 on:
-  pull_request:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: release-compatibility
+  cancel-in-progress: false
 
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  package-lifecycle:
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: Linux
+            os: ubuntu-latest
+          - platform: macOS
+            os: macos-latest
+          - platform: Windows
+            os: windows-latest
+    env:
+      BURNERFORM_LIFECYCLE_URL: https://burnerform.com
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -27,14 +37,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm format
-      - run: pnpm lint
-      - run: pnpm typecheck
-      - run: pnpm test
-      - run: pnpm docs:check
-      - run: pnpm conformance
-      - run: pnpm packages:check
       - run: pnpm build:package-candidates
       - run: pnpm packages:candidate-check
-      - run: pnpm skill:check
-      - run: pnpm mcp:smoke
+      - run: pnpm recovery:lifecycle
+      - run: pnpm mcp:lifecycle

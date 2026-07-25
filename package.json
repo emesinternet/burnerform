@@ -16,8 +16,11 @@
     "format:write": "prettier --write .",
     "lint": "eslint . --max-warnings=0",
     "conformance": "tsx scripts/check-conformance.ts",
+    "docs:check": "tsx scripts/check-doc-contracts.ts --public-export",
+    "mcp:lifecycle": "tsx scripts/verify-mcp-lifecycle.ts",
     "packages:check": "tsx scripts/check-package-contents.ts",
     "packages:candidate-check": "tsx scripts/verify-package-candidates.ts",
+    "recovery:lifecycle": "tsx scripts/verify-recovery-lifecycle.ts",
     "skill:check": "tsx scripts/check-skill-contract.ts",
     "mcp:smoke": "tsx scripts/smoke-mcp.ts"
   },
