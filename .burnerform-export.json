@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "e00174c717598f748f014c83cc276017daf78cbc",
+  "sourceCommit": "8ae875fd948c619edae389e89e10ee01f37299e5",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -11,7 +11,7 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "5ab196dd023f23efb81063a268e7c25f539e9ae7e70e43829399ed1b88416a45"
+      "sha256": "2a60c2f5c202ce95f81a0dc5271fdf2657df7f5ffc9a051304ccee7b4e445785"
     },
     {
       "path": ".gitignore",
@@ -95,7 +95,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "132c9eeecbb4d28a4c9ae1b761b7f86398262bf207aadfd32262db8538c5c739"
+      "sha256": "f4fc5c6e9589bbcac9188bfa1c4e92fc97ca862605a19086ccf88b166b49171d"
     },
     {
       "path": "packages/core/LICENSE",
@@ -348,6 +348,10 @@
     {
       "path": "scripts/check-package-contents.ts",
       "sha256": "1b14d5568308830ba29d0559e330577e8bd8386708a412c3327a716e2ed7f16d"
+    },
+    {
+      "path": "scripts/check-release.ts",
+      "sha256": "fcba717bd870c06d382389322f265e4dd30f832c7a49dc1b9a4b4b9984c71df4"
     },
     {
       "path": "scripts/check-skill-contract.ts",
