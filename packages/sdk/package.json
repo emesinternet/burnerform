@@ -1,0 +1,47 @@
+{
+  "name": "@burnerform/sdk",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Official TypeScript client for the accountless Burnerform API.",
+  "license": "Apache-2.0",
+  "homepage": "https://burnerform.com/docs",
+  "bugs": {
+    "url": "https://github.com/emesinternet/burnerform/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emesinternet/burnerform.git",
+    "directory": "packages/sdk"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/node/index.ts --format esm --dts --clean --splitting --tsconfig ../../tsconfig.packages.json"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "import": "./dist/node/index.js"
+    }
+  },
+  "dependencies": {
+    "@burnerform/core": "workspace:*",
+    "@napi-rs/keyring": "^1.3.0",
+    "zod": "^4.4.3"
+  }
+}

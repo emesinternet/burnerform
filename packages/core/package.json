@@ -1,0 +1,66 @@
+{
+  "name": "@burnerform/core",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Canonical Burnerform schemas, contracts, and cryptography.",
+  "license": "Apache-2.0",
+  "homepage": "https://burnerform.com/docs",
+  "bugs": {
+    "url": "https://github.com/emesinternet/burnerform/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emesinternet/burnerform.git",
+    "directory": "packages/core"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup \"src/**/*.ts\" --format esm --dts --clean --splitting --tsconfig ../../tsconfig.packages.json"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./contracts": {
+      "types": "./dist/contracts/index.d.ts",
+      "import": "./dist/contracts/index.js"
+    },
+    "./contracts/*": {
+      "types": "./dist/contracts/*.d.ts",
+      "import": "./dist/contracts/*.js"
+    },
+    "./crypto": {
+      "types": "./dist/crypto/index.d.ts",
+      "import": "./dist/crypto/index.js"
+    },
+    "./crypto/*": {
+      "types": "./dist/crypto/*.d.ts",
+      "import": "./dist/crypto/*.js"
+    },
+    "./form-schema": {
+      "types": "./dist/form-schema/index.d.ts",
+      "import": "./dist/form-schema/index.js"
+    },
+    "./form-schema/*": {
+      "types": "./dist/form-schema/*.d.ts",
+      "import": "./dist/form-schema/*.js"
+    }
+  },
+  "dependencies": {
+    "hash-wasm": "^4.12.0",
+    "zod": "^4.4.3"
+  }
+}

@@ -1,0 +1,48 @@
+---
+title: Conformance
+description: Synthetic Burnerform interoperability and failure fixtures.
+---
+
+These fixtures keep Burnerform's browser, SDK, and MCP encryption behavior
+compatible. Application and agent users do not need to run them.
+
+Independent HTTP clients use these fixtures to verify the
+[cryptographic protocol](/docs/cryptographic-protocol) before handling live
+forms.
+
+Burnerform contributors can run the repository's `pnpm conformance` test
+command to verify valid decryption, canonical form validation, password
+wrapping, and rejection of tampered, wrong-form, wrong-key, and wrong-password
+inputs. It runs Burnerform's local `scripts/check-conformance.ts` file; it is not
+an external package.
+
+## Fixtures
+
+<Callout type="warn" title="Synthetic data only">
+  Every identifier, key, answer, and password in these files is synthetic and
+  must never be reused for a live form.
+</Callout>
+
+### Browser response envelope
+
+Browser-produced encrypted response fixture. [Open the raw fixture](/conformance/response-envelope-v2.json).
+
+<ConformanceFixture file="response-envelope-v2.json" />
+
+### Node response envelope
+
+Node-produced encrypted response fixture. [Open the raw fixture](/conformance/response-envelope-v2-node.json).
+
+<ConformanceFixture file="response-envelope-v2-node.json" />
+
+### Public form state
+
+Public form and protected-access fixture. [Open the raw fixture](/conformance/public-form-v1.json).
+
+<ConformanceFixture file="public-form-v1.json" />
+
+### Password wrapping
+
+Password-based key wrapping fixture. [Open the raw fixture](/conformance/password-wrap-v1.json).
+
+<ConformanceFixture file="password-wrap-v1.json" />

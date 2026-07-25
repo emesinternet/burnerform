@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+artifacts/
+packages/*/dist/
+packages/mcp/dist-executable/
+*.tgz
+

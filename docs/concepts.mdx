@@ -1,0 +1,48 @@
+---
+title: Concepts
+description: Burnerform's accountless authorization and local custody model.
+---
+
+## One form, one management key
+
+A random management key manages one form only. It is not a platform API key
+and grants no identity or access to any other form. Learn where it lives in
+[local custody](/docs/security-and-custody).
+
+## Ciphertext-only server
+
+Respondent answers are validated and encrypted before upload. Decryption and CSV
+generation happen only in trusted client memory.
+
+<Callout type="warn" title="The management key grants control">
+  Anyone holding a management key can manage that form. Never place it in a URL,
+  query string, log, error, or model transcript.
+</Callout>
+
+## Lifecycle
+
+<Steps>
+  <Step>
+    ### Create
+
+    Publish an [allowlisted schema](/docs/form-schema), a public encryption key,
+    an expiry, and a response limit.
+
+  </Step>
+  <Step>
+    ### Collect
+
+    Respondents validate and encrypt answers in their own client before upload.
+
+  </Step>
+  <Step>
+    ### Close
+
+    Expiry, quota, or burn stops collection. Burn permanently deletes responses
+    and revokes public, reader, and creator access.
+
+  </Step>
+</Steps>
+
+[Recovery](/docs/recovery) is independent and remains under the operator's
+control.

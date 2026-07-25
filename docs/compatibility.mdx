@@ -1,0 +1,119 @@
+---
+title: Compatibility
+description: Version boundaries, supported runtimes, and safe Burnerform upgrades.
+---
+
+## Current contracts
+
+Burnerform versions its network and serialized contracts independently:
+
+| Contract              | Current line | Compatibility boundary                           |
+| --------------------- | ------------ | ------------------------------------------------ |
+| HTTPS API             | v1           | Clients advertise their version on every request |
+| TypeScript SDK        | 0.x          | API v1 currently accepts `>=0.1.0 <1.0.0`        |
+| Local MCP server      | 0.x          | Keep it on the same release as the SDK and skill |
+| Canonical form schema | 1            | Builder, SDK, MCP, API, and renderers share it   |
+| Response envelope     | 2            | Separate from API v1                             |
+| Recovery file         | 1            | Validated before any custody is stored           |
+
+API v1 and response-envelope version 2 are different version namespaces. An API
+version change does not imply a cryptographic format change.
+
+## Runtime support
+
+The TypeScript SDK and local MCP package require Node.js 24 or newer. Browser
+workflows support the current and previous major releases of Chrome, Edge,
+Firefox, and Safari. Each supported release must provide Web Crypto, IndexedDB,
+WebAssembly, and module workers.
+
+Desktop MCP installations use the operating-system credential store. Headless
+Linux uses a private persistent `BURNERFORM_DATA_DIR` and a unique
+`BURNERFORM_SECRET` supplied by the host secret manager.
+
+## API negotiation
+
+SDK and raw HTTPS clients send:
+
+```http
+X-Burnerform-Client-Version: 0.1.0
+```
+
+Every successful API response includes the API version and supported client
+range. The official SDK verifies both headers before accepting the body. An
+unsupported or malformed version fails closed with `unsupported_client`.
+
+Raw HTTP integrations must perform the same checks. Do not ignore a changed API
+version or supported range.
+
+## Upgrade safely
+
+<Steps>
+  <Step>
+    ### Finish or cancel active work
+
+    Stop response monitoring and allow the current MCP or SDK process to finish
+    its active tool call.
+
+  </Step>
+  <Step>
+    ### Keep custody and recovery
+
+    Preserve the private Burnerform data directory and a verified recovery copy.
+    Do not move secrets into source control or package directories.
+
+  </Step>
+  <Step>
+    ### Upgrade matching components
+
+    Upgrade `@burnerform/sdk`, `@burnerform/mcp`, and the Burnerform skill
+    together. Do not run old and new processes against one custody directory.
+
+    ```bash
+    VERSION="0.1.0"
+    pnpm add --global "@burnerform/mcp@$VERSION"
+    pnpm add "@burnerform/sdk@$VERSION"
+    ```
+
+    Install the Burnerform skill from the matching
+    `v$VERSION` release tag.
+
+  </Step>
+  <Step>
+    ### Restart and reconcile
+
+    Start one MCP or SDK process. Burnerform reconciles unfinished encrypted
+    operation records before new work. Call `get_form` for important aliases
+    before making another lifecycle change.
+
+  </Step>
+  <Step>
+    ### Verify before cleanup
+
+    Confirm tool discovery, public-form inspection, response reading, and one
+    non-destructive lifecycle read before removing the previous installation or
+    recovery copy.
+
+  </Step>
+</Steps>
+
+## Downgrades and migrations
+
+Do not downgrade across a custody or recovery format change. Burnerform rejects
+unsupported clients rather than silently rewriting protected state. When a
+future release requires migration, its release notes must identify the source
+version, target version, backup requirement, and rollback boundary.
+
+There are no automatic background upgrades. Package managers and agent clients
+may notify you of a new release, but the operator controls installation.
+
+## Independent clients
+
+Independent API clients should run the published
+[conformance suite](/docs/conformance) against their exact crypto and
+serialization implementation. Test positive, tamper, wrong-key,
+wrong-password, wrong-form, browser-to-Node, and Node-to-browser cases before
+handling live forms.
+
+The canonical [OpenAPI 3.1 document](/openapi.json) covers the HTTP contract.
+The [MCP tool reference](/docs/mcp/tools) and [Burnerform skill](/docs/skill)
+cover the agent contract.

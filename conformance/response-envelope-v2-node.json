@@ -1,0 +1,37 @@
+{
+  "name": "Burnerform Node response envelope v2",
+  "producer": "node",
+  "creatorPrivateKeyJwk": {
+    "key_ops": ["deriveBits"],
+    "ext": true,
+    "kty": "EC",
+    "x": "syCG3AHEURRP19CJN90vS6vNvzWDGhOSWL4ACU_bBZY",
+    "y": "kTYeQuTgthg8zvYiTGOpKScabcWd0IfsK2J4WsHSdxM",
+    "crv": "P-256",
+    "d": "KO1uDNFrx9XaoXB5WoTPfBan3ifLLRGIgQYkX_ti_VM"
+  },
+  "creatorPublicKey": "BLMghtwBxFEUT9fQiTfdL0urzb81gxoTkli-AAlP2wWWkTYeQuTgthg8zvYiTGOpKScabcWd0IfsK2J4WsHSdxM",
+  "context": {
+    "formId": "node-form-vector",
+    "keyId": "node-vector-key-0001",
+    "schemaHash": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+    "schemaVersion": 1
+  },
+  "envelope": {
+    "version": 2,
+    "keyId": "node-vector-key-0001",
+    "ephemeralPublicKey": "BPvX1yqTTbfcCy0EgO1iQ85KNbLNR4ZyW1-Oa_90RnW__FawTiEfNH5Vg5gs1Ds4Cbnf9rvWX-bw30d234UOL90",
+    "salt": "wHFH9EMzqh5uz8Iwk9WucO3BLAF0XOGXGCd7dm_qLCU",
+    "nonce": "DLPHC3xhnHgn7Y5u",
+    "ciphertext": "-fjUdkiczdDljWny2s3Uki30rvsgF1R7LhTAAXrZQDz32ccmuvPKXI7hfTw9JcrQMqVE6Js5wAnjZR60-bd7xZfIjWXbkCdH1y_RfZjdwMtTj_IyLeqMmP2E5Xf_B8fVaS-7LmL8onmBH-Gb5jemmwPw10mYia8malbpE8T7bhw",
+    "submissionId": "AQIDBAUGBwgJCgsMDQ4PEA"
+  },
+  "payload": {
+    "answers": {
+      "rating": 5,
+      "topics": ["security", "agents"]
+    },
+    "formVersion": 1,
+    "submittedAt": "2026-07-24T12:00:00.000Z"
+  }
+}

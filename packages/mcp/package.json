@@ -1,0 +1,48 @@
+{
+  "name": "@burnerform/mcp",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Local stdio MCP server for the complete Burnerform lifecycle.",
+  "license": "Apache-2.0",
+  "homepage": "https://burnerform.com/docs",
+  "bugs": {
+    "url": "https://github.com/emesinternet/burnerform/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emesinternet/burnerform.git",
+    "directory": "packages/mcp"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format esm --dts --clean --splitting --platform node --tsconfig ../../tsconfig.packages.json"
+  },
+  "bin": {
+    "burnerform-mcp": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@burnerform/core": "workspace:*",
+    "@burnerform/sdk": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "@napi-rs/keyring": "1.3.0",
+    "zod": "^4.4.3"
+  }
+}

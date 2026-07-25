@@ -1,0 +1,143 @@
+---
+title: Recovery
+description: Restore response and management access on another machine without sending custody to Burnerform.
+---
+
+## What recovery contains
+
+A recovery file is an encrypted copy of the form's creator custody. It includes
+the private response key and management key only inside authenticated
+encrypted material. Burnerform cannot open, replace, or regenerate it.
+
+The recovery file is protected by its separate recovery password. The file
+without the password is unusable, and the password without the file is
+unusable.
+
+## Before leaving the original machine
+
+<Steps>
+  <Step>
+    ### Save the recovery file
+
+    Browser-created forms offer **Download recovery file** after publishing.
+    MCP-managed forms use `export_recovery` with the local alias, a private
+    recovery-file directory, and a different private password directory. The
+    tool writes each recovery factor directly to its destination without
+    returning either value to the agent.
+
+  </Step>
+  <Step>
+    ### Keep the password separately
+
+    Keep the recovery and password directories separate. Move their files
+    through different private channels, and never place either destination in
+    source control or a shared agent workspace.
+
+  </Step>
+  <Step>
+    ### Preserve the original until verified
+
+    Do not erase the original browser data or Burnerform data directory until
+    restoration succeeds and the new machine can read the form.
+
+  </Step>
+</Steps>
+
+<Callout type="warn" title="Prepare before access is lost">
+  There is no account recovery. If the original custody is gone and either the
+  recovery file or its password is missing, Burnerform cannot restore access.
+</Callout>
+
+## Restore on another machine
+
+<Tabs items={["Browser", "Agent and MCP"]}>
+  <Tab>
+    <Steps>
+      <Step>
+        ### Open the management link
+
+        Open the form's management URL on the new machine. The link identifies
+        the form but does not contain the creator management key.
+
+      </Step>
+      <Step>
+        ### Choose restore
+
+        In **Restore from recovery file**, choose the encrypted JSON file and
+        enter its recovery password.
+
+      </Step>
+      <Step>
+        ### Verify the live form
+
+        Burnerform decrypts and validates the file locally, checks current
+        management access with the server, and stores custody in the new
+        browser. Confirm that Responses and Settings open before removing the
+        original copy.
+
+      </Step>
+    </Steps>
+
+  </Tab>
+  <Tab>
+    <Steps>
+      <Step>
+        ### Connect a fresh MCP installation
+
+        Install and configure the [local MCP server](/docs/mcp) on the new
+        machine with a new private data directory.
+
+      </Step>
+      <Step>
+        ### Start recovery
+
+        Ask the agent to call `restore_recovery` with a new harmless alias.
+        Burnerform opens a trusted local screen.
+
+      </Step>
+      <Step>
+        ### Supply both recovery factors locally
+
+        Retrieve the encrypted recovery file and its password from their
+        separate destinations. Choose the file and enter the password in that
+        screen. Neither value enters the prompt, MCP arguments, or tool result.
+
+      </Step>
+      <Step>
+        ### Confirm restored custody
+
+        Call `get_form` with the new alias, then read a small response page or
+        inspect Settings. Keep the original copy until these checks pass.
+
+      </Step>
+    </Steps>
+
+  </Tab>
+</Tabs>
+
+## What Burnerform verifies
+
+Before accepting restored custody, the client checks:
+
+- The recovery-file format and version.
+- Authenticated recovery metadata.
+- The P-256 public and private response key pair.
+- The form and key identifiers.
+- The management key against the live form.
+
+If live management verification fails, Burnerform removes the tentative local
+custody and reports that recovery failed.
+
+## After restoration
+
+The restored machine can read responses, change expiration and response limit,
+manage public-form protection, export another encrypted recovery copy, and burn
+the form. Shared response readers cannot gain these lifecycle permissions.
+
+Burning the form deletes server-side responses and public content and removes
+the restored local custody. Keep recovery material only as long as the form
+remains live and your retention policy requires it.
+
+See [Security and custody](/docs/security-and-custody) for the trust boundary
+and [Compatibility](/docs/compatibility) before restoring with a different
+client version.

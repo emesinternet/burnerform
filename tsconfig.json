@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": false,
+    "skipLibCheck": true,
+    "paths": {
+      "@burnerform/core": ["./packages/core/src/index.ts"],
+      "@burnerform/core/*": ["./packages/core/src/*"],
+      "@burnerform/sdk": ["./packages/sdk/src/index.ts"],
+      "@burnerform/sdk/node": ["./packages/sdk/src/node/index.ts"],
+      "@burnerform/mcp": ["./packages/mcp/src/index.ts"]
+    }
+  },
+  "include": ["packages/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "burnerform-public-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "build": "pnpm --filter @burnerform/core build && pnpm --filter @burnerform/sdk build && pnpm --filter @burnerform/mcp build",
+    "build:package-candidates": "pnpm build && tsx scripts/build-package-candidates.ts",
+    "pretest": "pnpm build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit --incremental false",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "eslint . --max-warnings=0",
+    "conformance": "tsx scripts/check-conformance.ts",
+    "packages:check": "tsx scripts/check-package-contents.ts",
+    "packages:candidate-check": "tsx scripts/verify-package-candidates.ts",
+    "skill:check": "tsx scripts/check-skill-contract.ts",
+    "mcp:smoke": "tsx scripts/smoke-mcp.ts"
+  },
+  "devDependencies": {
+    "@burnerform/core": "workspace:*",
+    "@burnerform/mcp": "workspace:*",
+    "@burnerform/sdk": "workspace:*",
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^20",
+    "eslint": "^9.39.2",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "tsx": "^4.23.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^4.1.10",
+    "zod": "^4.4.3"
+  }
+}

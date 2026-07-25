@@ -1,0 +1,70 @@
+{
+  "available": {
+    "apiVersion": "v1",
+    "passwordRequired": false,
+    "formId": "0123456789abcdef0123456789abcdef",
+    "schemaVersion": 1,
+    "schema": {
+      "version": 1,
+      "title": "Synthetic conformance form",
+      "description": "Safe synthetic content for testing.",
+      "fields": [
+        {
+          "id": "field_0123456789",
+          "type": "short_text",
+          "label": "Name",
+          "required": true,
+          "maxLength": 80
+        },
+        {
+          "id": "field_9876543210",
+          "type": "multiple_choice",
+          "label": "Topics",
+          "required": false,
+          "options": [
+            { "id": "option_security_01", "label": "Security" },
+            { "id": "option_agents_0002", "label": "Agents" },
+            { "id": "option_forms_00003", "label": "Forms" }
+          ],
+          "minSelections": 1,
+          "maxSelections": 2
+        }
+      ]
+    },
+    "schemaHash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "keyId": "browser-vector-key-0001",
+    "creatorPublicKey": {
+      "format": "raw-p256",
+      "value": "BMSzCF7yTvwuYxElYDp1acbZJ8rMXs1NmA4sckWKeaygI_L6l5_uFyj6fSxDIrMDb7ND0dZt8QHJ2Xbws4TXXN0",
+      "keyId": "browser-vector-key-0001"
+    },
+    "maxResponseBytes": 524288,
+    "expiresAt": "2026-07-25T12:00:00.000Z",
+    "links": {
+      "self": "/api/v1/forms/0123456789abcdef0123456789abcdef",
+      "access": "/api/v1/forms/0123456789abcdef0123456789abcdef/access",
+      "responses": "/api/v1/forms/0123456789abcdef0123456789abcdef/responses"
+    }
+  },
+  "protected": {
+    "apiVersion": "v1",
+    "passwordRequired": true,
+    "links": {
+      "self": "/api/v1/forms/0123456789abcdef0123456789abcdef",
+      "access": "/api/v1/forms/0123456789abcdef0123456789abcdef/access",
+      "responses": "/api/v1/forms/0123456789abcdef0123456789abcdef/responses"
+    }
+  },
+  "validAnswers": {
+    "field_0123456789": "Ada",
+    "field_9876543210": ["option_security_01", "option_agents_0002"]
+  },
+  "invalidAnswers": {
+    "field_0123456789": "",
+    "field_9876543210": [
+      "option_security_01",
+      "option_agents_0002",
+      "option_forms_00003"
+    ]
+  }
+}

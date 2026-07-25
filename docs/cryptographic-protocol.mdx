@@ -1,0 +1,128 @@
+---
+title: Cryptographic protocol
+description: The exact formats independent clients use to create forms, encrypt responses, manage access, and verify interoperability.
+---
+
+## Protocol versions
+
+| Contract          | Version |
+| ----------------- | ------: |
+| Form schema       |       1 |
+| Response envelope |       2 |
+| Password wrapper  |       1 |
+| Recovery file     |       1 |
+
+All binary values use unpadded base64url. P-256 public keys use the 65-byte SEC1
+uncompressed `raw` representation. Generate every key, salt, nonce, submission
+ID, and management key with a cryptographically secure random-number generator.
+
+## Form creation
+
+Create a P-256 ECDH response key pair and an independent 32-byte management key.
+Publish only the public response key. Keep the private response key and
+management key in local encrypted custody.
+
+Management requests send the management key in the
+`x-burner-management-key` header. Never place it in a URL, log, prompt, or tool
+result. The server stores only its keyed digest.
+
+The canonical schema hash is unpadded base64url SHA-256 over canonical UTF-8
+JSON. Canonical serialization recursively sorts object keys, preserves array
+order, uses JSON primitive spelling, rejects duplicate and
+prototype-pollution keys, and emits no insignificant whitespace.
+
+## Response envelope v2
+
+Response encryption uses Web Crypto ECDH P-256, HKDF-SHA-256, and AES-256-GCM
+with a 128-bit tag. For every submission:
+
+1. Generate a fresh ephemeral P-256 key pair, 32-byte salt, 12-byte nonce, and
+   16-byte submission ID.
+2. Derive `sharedSecret = ECDH(ephemeralPrivate, creatorPublic)`.
+3. Build the canonical associated-data object below.
+4. Derive `responseKey = HKDF-SHA-256(sharedSecret, salt, aad, 32)`.
+5. Encrypt canonical response JSON with AES-256-GCM using the nonce, associated
+   data, and a 128-bit tag.
+
+```json title="Associated data"
+{
+  "envelopeVersion": 2,
+  "formId": "...",
+  "keyId": "...",
+  "schemaHash": "...",
+  "schemaVersion": 1,
+  "submissionId": "..."
+}
+```
+
+```json title="Plaintext before local encryption"
+{
+  "answers": {
+    "field_id": "Answer"
+  },
+  "formVersion": 1,
+  "submittedAt": "2026-07-25T12:00:00.000Z"
+}
+```
+
+```json title="Submitted envelope"
+{
+  "version": 2,
+  "keyId": "...",
+  "ephemeralPublicKey": "...",
+  "salt": "...",
+  "nonce": "...",
+  "ciphertext": "...",
+  "submissionId": "..."
+}
+```
+
+The `ciphertext` value contains the Web Crypto ciphertext followed by its
+16-byte authentication tag. Reject unknown versions, fields, lengths, invalid
+points, malformed base64url, and any authentication failure before processing
+plaintext.
+
+## Password wrapping v1
+
+Password wrapping uses Argon2id with a fresh 16-byte salt, 19,456 KiB memory,
+2 passes, parallelism 1, and a 32-byte output. Consume exact UTF-8 password
+bytes without normalization.
+
+Wrap PKCS#8 private-key bytes and, for creator custody, the management key in
+authenticated JSON using AES-256-GCM and a fresh 12-byte nonce. The exact
+associated data is:
+
+```text
+burnerform:wrapped-secret:v1:<kdf-name>:<base64url-salt>
+```
+
+Store the wrapper version, KDF name, parameters, salt, nonce, and ciphertext.
+Respondent-access passwords are separate server verifiers and never wrap the
+creator management key.
+
+## Recovery
+
+A version 1 recovery file stores the form ID, key ID, public key, creation time,
+and password-wrapped creator custody. The same identity metadata is included
+inside the authenticated wrapped payload and must match the outer values during
+restore. Keep the recovery file and its separate password in different private
+locations.
+
+Restore locally, verify the P-256 key pair, then authenticate the recovered
+management key against the live form before persisting custody.
+
+## Limits
+
+Canonical response plaintext is limited to 375 KiB. The serialized encrypted
+envelope is limited to the form's advertised response-byte limit, up to
+512 KiB. Individual answer and field limits come from the
+[form schema](/docs/form-schema).
+
+## Verify an implementation
+
+Use the published [conformance fixtures](/docs/conformance) before handling
+live forms. Tests must reject changes to any associated-data field, submission
+ID, nonce, salt, public key, ciphertext, tag, version, or password.
+
+Continue with the [API v1 reference](/docs/api), [API errors](/docs/api/errors),
+and [security and custody](/docs/security-and-custody).

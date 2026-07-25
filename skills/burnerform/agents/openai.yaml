@@ -1,0 +1,14 @@
+interface:
+  display_name: "Burnerform"
+  short_description: "Create and manage encrypted temporary forms"
+  default_prompt: "Use $burnerform to create and publish a temporary encrypted form."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "burnerform"
+      description: "Local Burnerform lifecycle and encryption tools"
+      transport: "stdio"
+
+policy:
+  allow_implicit_invocation: true

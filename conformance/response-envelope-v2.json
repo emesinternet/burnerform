@@ -1,0 +1,36 @@
+{
+  "name": "Burnerform response envelope v2",
+  "producer": "browser",
+  "creatorPublicKey": "BMSzCF7yTvwuYxElYDp1acbZJ8rMXs1NmA4sckWKeaygI_L6l5_uFyj6fSxDIrMDb7ND0dZt8QHJ2Xbws4TXXN0",
+  "creatorPrivateKeyJwk": {
+    "key_ops": ["deriveBits"],
+    "ext": true,
+    "kty": "EC",
+    "x": "xLMIXvJO_C5jESVgOnVpxtknysxezU2YDixyRYp5rKA",
+    "y": "I_L6l5_uFyj6fSxDIrMDb7ND0dZt8QHJ2Xbws4TXXN0",
+    "crv": "P-256",
+    "d": "OTBXo0YqDpwWQL_sr7kCMgs2nJLqiQdNkviSs09hA9A"
+  },
+  "context": {
+    "formId": "test-form",
+    "keyId": "YBFWQF0NUjcgEdpTY1Oang",
+    "schemaHash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "schemaVersion": 1
+  },
+  "envelope": {
+    "version": 2,
+    "keyId": "YBFWQF0NUjcgEdpTY1Oang",
+    "ephemeralPublicKey": "BO8mSWEu_ZuQ-Q5XxcX5ckSX8V5k0UWBlL5GB4irrt8lYooylx9fME5QCkrOBxzFQp7_EXX04fOjvl2nc_Jpquc",
+    "salt": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8",
+    "nonce": "oKGio6Slpqeoqaqr",
+    "ciphertext": "wGHwOx68d5IeHDdTyxkYpGjCiyBJCp6qzDnOctlqZ1LZpmDQhb3CjakaQSFpcm-h1u-7fIYHQAg4U1kF1o1YIZNXSyt-q7smJT7QDt044b844zLEdL9OvsYiGwpsQ9CNS-IqBqfBaJehMxWU2e85JQ",
+    "submissionId": "AAECAwQFBgcICQoLDA0ODw"
+  },
+  "payload": {
+    "answers": {
+      "email": "ada@example.com"
+    },
+    "formVersion": 1,
+    "submittedAt": "2026-07-21T00:00:00.000Z"
+  }
+}

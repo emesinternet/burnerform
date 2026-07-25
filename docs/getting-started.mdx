@@ -1,0 +1,219 @@
+---
+title: Getting started
+description: Start with the complete agent workflow, the TypeScript SDK, or the low-level API v1 contract.
+---
+
+<Tabs items={["Agent and MCP", "TypeScript SDK", "Raw HTTP contract"]}>
+  <Tab>
+    Use the [Burnerform skill](/docs/skill) with the local MCP server when an
+    agent should own the complete lifecycle.
+  </Tab>
+  <Tab>
+    Use the [TypeScript SDK](/docs/typescript-sdk) when application code should
+    own encrypted local custody and recovery.
+  </Tab>
+  <Tab>
+    Use API v1 when you implement Burnerform's [cryptographic
+    protocol](/docs/cryptographic-protocol) and custody contracts. The server
+    accepts prepared public material and ciphertext, not plaintext answers or
+    private keys.
+  </Tab>
+</Tabs>
+
+## Agent and MCP
+
+<Steps>
+  <Step>
+    ### Install the MCP server
+
+    Install Node.js 24 or newer, then install the command:
+
+    ```bash
+    pnpm add --global @burnerform/mcp
+    ```
+
+  </Step>
+  <Step>
+    ### Connect your agent
+
+    Add a local stdio server named `burnerform`:
+
+    ```json title="mcp.json"
+    {
+      "command": "burnerform-mcp",
+      "args": [],
+      "env": {
+        "BURNERFORM_BASE_URL": "https://burnerform.com"
+      }
+    }
+    ```
+
+    Desktop systems protect installation secrets with the operating-system
+    credential store. Headless systems also set `BURNERFORM_SECRET` and
+    `BURNERFORM_DATA_DIR`.
+
+  </Step>
+  <Step>
+    ### Install the skill
+
+    Download the
+    [`skills/burnerform`](https://github.com/emesinternet/burnerform/tree/main/skills/burnerform)
+    directory into your agent's skills directory. Keep `SKILL.md`,
+    `references`, and `agents` together.
+
+  </Step>
+  <Step>
+    ### Create a form
+
+    Give the agent the complete goal:
+
+    ```text
+    Use $burnerform to create a product feedback form with a required rating
+    and optional comments. Keep it open for seven days or 100 responses.
+    Return the public link and monitor until five responses arrive.
+    ```
+
+    The agent calls `draft_form`, `publish_form`, and the bounded response tools.
+    Publication returns a public URL and harmless local alias. Passwords,
+    creator management keys, private keys, and recovery contents remain in local
+    custody.
+
+  </Step>
+</Steps>
+
+Continue with the [creator and respondent walkthroughs](/docs/mcp#creator-workflow)
+or inspect every tool in the [MCP reference](/docs/mcp/tools).
+
+## TypeScript SDK
+
+<Steps>
+  <Step>
+    ### Install
+
+    ```bash
+    pnpm add @burnerform/sdk
+    ```
+
+    The Node.js SDK requires Node.js 24 or newer.
+
+  </Step>
+  <Step>
+    ### Draft and publish
+
+    Save this as `publish-form.mjs`:
+
+    ```ts title="publish-form.mjs"
+    import { Burnerform } from "@burnerform/sdk/node";
+
+    const burnerform = await Burnerform.open({
+      baseUrl: "https://burnerform.com",
+    });
+
+    try {
+      await burnerform.draftForm("product-feedback", {
+        version: 1,
+        title: "Product feedback",
+        description: "Tell us what worked and what did not.",
+        fields: [
+          {
+            id: "product_rating_01",
+            type: "rating",
+            label: "How would you rate the product?",
+            required: true,
+            min: 1,
+            max: 5,
+            display: "stars",
+          },
+          {
+            id: "product_notes_01",
+            type: "long_text",
+            label: "Anything else?",
+            maxLength: 2000,
+          },
+        ],
+      });
+
+      const published = await burnerform.publishForm({
+        alias: "product-feedback",
+        expiresAt: new Date(Date.now() + 7 * 86_400_000).toISOString(),
+        maxResponses: 100,
+      });
+
+      console.log(published.publicUrl);
+    } finally {
+      await burnerform.close();
+    }
+    ```
+
+  </Step>
+  <Step>
+    ### Run it
+
+    ```bash
+    node publish-form.mjs
+    ```
+
+    The SDK validates the [canonical schema](/docs/form-schema), creates creator keys and the
+    per-form management key, publishes only safe material, stores
+    encrypted local custody, and verifies a recovery file before returning.
+
+  </Step>
+</Steps>
+
+<Callout type="warn" title="One process per data directory">
+  Keep the Burnerform data directory private and persistent. Do not open the
+  same directory from multiple SDK or MCP processes.
+</Callout>
+
+## Raw HTTP
+
+The HTTPS API is accountless, but it is intentionally not a server-side crypto
+SDK. Creation clients must generate and retain the management key and
+P-256 private response key locally. Respondent clients must encrypt answers
+before submission. Use the SDK unless you are implementing the
+[cryptographic protocol](/docs/cryptographic-protocol).
+
+This request is a runnable first check against an existing public form:
+
+<CodeExampleTabs
+  groupId="shell"
+  examples={[
+    {
+      value: "curl",
+      label: "cURL",
+      language: "bash",
+      code: `FORM_ID="replace-with-form-id"
+
+curl --fail-with-body \\
+--header "Accept: application/json" \\
+--header "X-Burnerform-Client-Version: 0.1.0" \\
+"https://burnerform.com/api/v1/forms/$FORM_ID"`,
+},
+{
+value: "powershell",
+label: "PowerShell",
+language: "powershell",
+code: `$formId = "replace-with-form-id"
+$headers = @{
+Accept = "application/json"
+"X-Burnerform-Client-Version" = "0.1.0"
+}
+
+Invoke-RestMethod -Uri "https://burnerform.com/api/v1/forms/$formId" -Headers $headers`,
+},
+]}
+/>
+
+A successful response contains `apiVersion: "v1"`, the canonical schema,
+creator public key, schema hash, expiry, response byte limit, and discovery
+links. A protected form returns `passwordRequired: true` until the client
+creates a respondent session.
+
+For creation, encrypted submission, management, and burn requests, use the
+[generated API v1 reference](/docs/api) and download the canonical
+[OpenAPI 3.1 document](/openapi.json). The
+[conformance fixtures](/docs/conformance) verify independent crypto
+implementations before they handle live forms.
+
+Before deploying an integration, review the supported runtimes and upgrade
+rules in [Compatibility](/docs/compatibility).

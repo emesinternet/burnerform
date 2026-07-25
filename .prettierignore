@@ -1,0 +1,6 @@
+artifacts
+coverage
+node_modules
+packages/*/dist
+packages/*/dist-executable
+pnpm-lock.yaml

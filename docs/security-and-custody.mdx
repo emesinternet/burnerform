@@ -1,0 +1,45 @@
+---
+title: Security and custody
+description: Where Burnerform agent secrets live and where they never go.
+---
+
+## Desktop
+
+The MCP process stores its installation secret in the operating system
+credential store and encrypts per-form records on disk.
+
+## Headless systems
+
+Supply a reviewed machine secret through `BURNERFORM_SECRET` and mount a private
+persistent `BURNERFORM_DATA_DIR`. Never share that directory between processes
+or place it in a repository.
+
+<Callout type="warn" title="Keep secrets out of model context">
+  Passwords, management keys, recovery contents, and full management URLs must
+  never appear in prompts, tool results, logs, or telemetry.
+</Callout>
+
+## Response content
+
+Decrypted responses are bounded, labeled as untrusted respondent content, and
+never written to the custody store or operation journal.
+
+<TypeTable
+  type={{
+    managementKey: {
+      type: "secret",
+      description: "Authorizes lifecycle changes for one form.",
+      required: true,
+    },
+    responsePrivateKey: {
+      type: "secret",
+      description: "Decrypts response envelopes in trusted local memory.",
+      required: true,
+    },
+    recoveryFile: {
+      type: "encrypted file",
+      description:
+        "Restores creator and response access with its separate password.",
+    },
+  }}
+/>
