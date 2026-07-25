@@ -1,5 +1,6 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { BURNERFORM_CLIENT_VERSION } from "@burnerform/core";
 import { burnerformToolDefinitions } from "@burnerform/mcp";
 
 async function filesUnder(directory: string): Promise<string[]> {
@@ -27,6 +28,19 @@ async function main() {
     path.resolve("skills", "burnerform", "SKILL.md"),
     ...(await filesUnder(path.resolve("skills", "burnerform", "references"))),
   ];
+  const compatibilityFile = path.resolve(
+    documentationDirectory,
+    "compatibility.mdx",
+  );
+  const compatibilitySource = await readFile(compatibilityFile, "utf8");
+  for (const expected of [
+    `X-Burnerform-Client-Version: ${BURNERFORM_CLIENT_VERSION}`,
+    `VERSION="${BURNERFORM_CLIENT_VERSION}"`,
+  ])
+    if (!compatibilitySource.includes(expected))
+      failures.push(
+        `${path.relative(".", compatibilityFile)}: missing released version example ${expected}`,
+      );
   const toolNames = new Set<string>(
     burnerformToolDefinitions.map((definition) => definition.name),
   );

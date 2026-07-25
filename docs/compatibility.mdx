@@ -35,7 +35,7 @@ Linux uses a private persistent `BURNERFORM_DATA_DIR` and a unique
 SDK and raw HTTPS clients send:
 
 ```http
-X-Burnerform-Client-Version: 0.1.0
+X-Burnerform-Client-Version: 0.1.1
 ```
 
 Every successful API response includes the API version and supported client
@@ -69,7 +69,7 @@ version or supported range.
     together. Do not run old and new processes against one custody directory.
 
     ```bash
-    VERSION="0.1.0"
+    VERSION="0.1.1"
     pnpm add --global "@burnerform/mcp@$VERSION"
     pnpm add "@burnerform/sdk@$VERSION"
     ```
