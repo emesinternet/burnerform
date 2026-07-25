@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "3e074087541587157b4bd50afff0036a9ba89b80",
+  "sourceCommit": "9400a9deb31a7a27152c4b056df7e7ca987ac00d",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -8,6 +8,10 @@
     {
       "path": ".github/workflows/compatibility.yml",
       "sha256": "efdadd47dfc63e8077772c75b019b9c7b1411de074132289ee66e9e409f3f79c"
+    },
+    {
+      "path": ".github/workflows/publish.yml",
+      "sha256": "23bdda5a2051c280d618fedfff150de038deb3a23af8b753813105ca7328ef5f"
     },
     {
       "path": ".gitignore",
