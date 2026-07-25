@@ -9,8 +9,6 @@
   "scripts": {
     "build": "pnpm --filter @burnerform/core build && pnpm --filter @burnerform/sdk build && pnpm --filter @burnerform/mcp build",
     "build:package-candidates": "pnpm build && tsx scripts/build-package-candidates.ts",
-    "build:mcp-executable": "tsx scripts/build-mcp-executable.ts",
-    "build:mcpb-candidate": "pnpm build:mcp-executable && tsx scripts/build-mcpb-candidate.ts",
     "pretest": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit --incremental false",
@@ -20,23 +18,19 @@
     "conformance": "tsx scripts/check-conformance.ts",
     "docs:check": "tsx scripts/check-doc-contracts.ts --public-export",
     "mcp:lifecycle": "tsx scripts/verify-mcp-lifecycle.ts",
-    "mcpb:candidate-check": "tsx scripts/verify-mcpb-candidate.ts",
     "packages:check": "tsx scripts/check-package-contents.ts",
     "packages:candidate-check": "tsx scripts/verify-package-candidates.ts",
     "release:check": "pnpm docs:check && tsx scripts/check-release.ts",
     "recovery:lifecycle": "tsx scripts/verify-recovery-lifecycle.ts",
     "skill:check": "tsx scripts/check-skill-contract.ts",
-    "mcp:smoke": "tsx scripts/smoke-mcp.ts",
-    "smoke:mcp-executable": "tsx scripts/smoke-mcp-executable.ts"
+    "mcp:smoke": "tsx scripts/smoke-mcp.ts"
   },
   "devDependencies": {
-    "@anthropic-ai/mcpb": "2.1.2",
     "@burnerform/core": "workspace:*",
     "@burnerform/mcp": "workspace:*",
     "@burnerform/sdk": "workspace:*",
     "@eslint/js": "^9.39.2",
     "@types/node": "^20",
-    "@yao-pkg/pkg": "6.21.0",
     "eslint": "^9.39.2",
     "prettier": "^3.9.6",
     "tsup": "^8.5.1",

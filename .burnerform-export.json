@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "da0b2a121b5b416804a0367e88ff6022a2693363",
+  "sourceCommit": "7f5df8992168106c4805d08bf88133a9b57fe8eb",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/mcp.mdx",
-      "sha256": "3734bb48f4aef26c480001e9fdb51192c0962d96eff3a5decc9b20c0807a412d"
+      "sha256": "cf5f626e2056135940700e707f34933dcfa2eb7620bd8ef4106405f6afe95cc6"
     },
     {
       "path": "docs/recovery.mdx",
@@ -95,7 +95,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "67f3338d90bb660f042d65db5265d2eaa09ba2d942a87d962e0b659d09a46e51"
+      "sha256": "f4fc5c6e9589bbcac9188bfa1c4e92fc97ca862605a19086ccf88b166b49171d"
     },
     {
       "path": "packages/core/LICENSE",
@@ -210,10 +210,6 @@
       "sha256": "a36389e9f0c388d97f94b626916e735993480aa1d593923883ff92e2ef8b86ea"
     },
     {
-      "path": "packages/mcp/tsup.executable.config.ts",
-      "sha256": "663414ff8f73f31e5708ff4a49b0d127ace964e18724896ba9be86ca8bfd93c8"
-    },
-    {
       "path": "packages/sdk/LICENSE",
       "sha256": "5e017ebd7eaaf2a004f92ef738bdde8ed10a3fd25b3bcf57226d77b2d11629b6"
     },
@@ -319,7 +315,7 @@
     },
     {
       "path": "pnpm-lock.yaml",
-      "sha256": "1157b73e92334066055cf5e1b9025041df85ed073e32b5b5d7c0fd1f910dda83"
+      "sha256": "4dd262fa2b5174c28cf28db47eb990ae9d37144407b533f40463d5881e589f90"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -336,14 +332,6 @@
     {
       "path": "README.md",
       "sha256": "1dd802a7ede60225276c6270c0e398cb88fe618b9c1dbc0681455696bca82f52"
-    },
-    {
-      "path": "scripts/build-mcp-executable.ts",
-      "sha256": "71d9425e2fc9332deef8c4873b248df8152ebbb42685916676c91555656e6b36"
-    },
-    {
-      "path": "scripts/build-mcpb-candidate.ts",
-      "sha256": "6e9cd10961ae5602c5055dcb3f57eddaf8ec624ffe23ebc42adb2f36b2104f59"
     },
     {
       "path": "scripts/build-package-candidates.ts",
@@ -370,20 +358,12 @@
       "sha256": "7c7a4e2be0fe031c7c426ebfe3f072f1603dc84cb08ce43ff21b18178d9b5fe3"
     },
     {
-      "path": "scripts/smoke-mcp-executable.ts",
-      "sha256": "be362b2fdd8f407176ea37313bccbd70d3976db27f588e1b0478dc002eaede44"
-    },
-    {
       "path": "scripts/smoke-mcp.ts",
       "sha256": "a535a222dddb00cef7da742e528dc5266ccced70e408632068703b6023d07fd0"
     },
     {
       "path": "scripts/verify-mcp-lifecycle.ts",
-      "sha256": "cf77dd9f7d1c1d5cbf8389133b3a9912bcfa9c948d06946a85df22dd2f0c9514"
-    },
-    {
-      "path": "scripts/verify-mcpb-candidate.ts",
-      "sha256": "d83f72ab96acad15bacb0359780704c56a1828e47382ac98bcd390ba38ee6446"
+      "sha256": "92650d059461fb0d94336e5628b8217eab993fcca997bbad2b73bf73a8737a19"
     },
     {
       "path": "scripts/verify-package-candidates.ts",
