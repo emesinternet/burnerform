@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "ef460e48f35b18e4e971e177a6532625983401fe",
+  "sourceCommit": "8d8329756584471ac763f28071c8461424326fc5",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -30,6 +30,10 @@
       "sha256": "694a79f5520328011b9bd57f7f26a76145a78257dfa16ae420fe386673014140"
     },
     {
+      "path": "CONTRIBUTING.md",
+      "sha256": "5659a1f021aafca37c2371032df4acc7dea355c1a9ccad579691029dca3ac2f6"
+    },
+    {
       "path": "docs/compatibility.mdx",
       "sha256": "b7ee737f32d8e525496281363e1dcfca11b0bd536c158bc2172ab8eca678dfad"
     },
@@ -51,7 +55,7 @@
     },
     {
       "path": "docs/getting-started.mdx",
-      "sha256": "628c8157d4c9710871ddade023225fd9b8721c5535eff39b18ebf2d04598de7f"
+      "sha256": "b604af4662df2e90ff52760e6b2bfe0782d9a2e004c4b3e0db78ab77dbbdad4e"
     },
     {
       "path": "docs/mcp.mdx",
