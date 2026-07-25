@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "21f2bcf281c56105a4ba6fe6ced452cc656f7bfd",
+  "sourceCommit": "da0b2a121b5b416804a0367e88ff6022a2693363",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/mcp.mdx",
-      "sha256": "3abe132823e606bca055e02980ea999274e74f1a19c1fe1522b14614d74a1b1d"
+      "sha256": "3734bb48f4aef26c480001e9fdb51192c0962d96eff3a5decc9b20c0807a412d"
     },
     {
       "path": "docs/recovery.mdx",
