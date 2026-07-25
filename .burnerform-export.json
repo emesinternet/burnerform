@@ -1,9 +1,13 @@
 {
-  "sourceCommit": "8d8329756584471ac763f28071c8461424326fc5",
+  "sourceCommit": "3f7611ebfe9b1d8361c5e7bdf1ac534496ee0625",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "d30d5bc6126224f10867b880c65a91559e75ca5f3729213d3951d031481f96b7"
+      "sha256": "4b205a56a5dda275680a7754022404d456aa5f3ffc6602294e31608cff2a45a2"
+    },
+    {
+      "path": ".github/workflows/compatibility.yml",
+      "sha256": "efdadd47dfc63e8077772c75b019b9c7b1411de074132289ee66e9e409f3f79c"
     },
     {
       "path": ".gitignore",
@@ -87,7 +91,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "267a1d9db42155010c67e081c0d2a17e525011d97edff3f7da589ff96ad906f2"
+      "sha256": "9e5f41a14693b95948fc85202800d26aa2e0ce5066e139d4812136e8e0c79aad"
     },
     {
       "path": "packages/core/LICENSE",
@@ -334,6 +338,10 @@
       "sha256": "6a3716d26b31361c8119341f1d3645ef29f103c7687d55eb87ccad69d4c4f83f"
     },
     {
+      "path": "scripts/check-doc-contracts.ts",
+      "sha256": "52c4a093d23b3a4094b32e71a17d54852ef26056fe639aeb6a3beada492fe0de"
+    },
+    {
       "path": "scripts/check-package-contents.ts",
       "sha256": "1b14d5568308830ba29d0559e330577e8bd8386708a412c3327a716e2ed7f16d"
     },
@@ -346,8 +354,16 @@
       "sha256": "a535a222dddb00cef7da742e528dc5266ccced70e408632068703b6023d07fd0"
     },
     {
+      "path": "scripts/verify-mcp-lifecycle.ts",
+      "sha256": "cf77dd9f7d1c1d5cbf8389133b3a9912bcfa9c948d06946a85df22dd2f0c9514"
+    },
+    {
       "path": "scripts/verify-package-candidates.ts",
       "sha256": "e93ee4d75531700c7307a81abca2f0cd7c2e89e89e1f4e659a6da7a4c7bdce00"
+    },
+    {
+      "path": "scripts/verify-recovery-lifecycle.ts",
+      "sha256": "b271df81674c64bda28a9967a8d33b7a85f5bc658bb2d1590d7b111bab568614"
     },
     {
       "path": "skills/burnerform/agents/openai.yaml",
