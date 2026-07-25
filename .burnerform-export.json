@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "3f7611ebfe9b1d8361c5e7bdf1ac534496ee0625",
+  "sourceCommit": "3e074087541587157b4bd50afff0036a9ba89b80",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -331,7 +331,7 @@
     },
     {
       "path": "scripts/build-package-candidates.ts",
-      "sha256": "12955292f59147b7c2f7ea4a27f450e9f019a337809e864e66c3102f40be1470"
+      "sha256": "894129c28bbf8637ec40f0275c22a783b0629d8181d84fb29fdb32eaf64615b9"
     },
     {
       "path": "scripts/check-conformance.ts",

@@ -9,6 +9,7 @@ const packages = [
   "@burnerform/sdk",
   "@burnerform/mcp",
 ] as const;
+const pnpmCli = process.env.npm_execpath;
 
 function run(command: string, args: string[]) {
   return new Promise<void>((resolve, reject) => {
@@ -25,16 +26,22 @@ function run(command: string, args: string[]) {
 }
 
 async function main() {
+  if (!pnpmCli) throw new Error("pnpm must invoke the candidate build.");
+  const pnpmUsesNode = /\.[cm]?js$/iu.test(pnpmCli);
   await rm(outputDirectory, { recursive: true, force: true });
   await mkdir(outputDirectory, { recursive: true });
   for (const packageName of packages) {
-    await run("pnpm", [
+    const args = [
       "--filter",
       packageName,
       "pack",
       "--pack-destination",
       outputDirectory,
-    ]);
+    ];
+    await run(
+      pnpmUsesNode ? process.execPath : pnpmCli,
+      pnpmUsesNode ? [pnpmCli, ...args] : args,
+    );
   }
 
   const tarballs = (await readdir(outputDirectory))
