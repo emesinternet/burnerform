@@ -28,23 +28,6 @@ const toolResultSchema = z.object({
     .optional(),
 });
 
-function nativeExecutablePath() {
-  const platformNames = {
-    darwin: "macos",
-    linux: "linux",
-    win32: "win",
-  } as const;
-  const platform =
-    platformNames[process.platform as keyof typeof platformNames];
-  if (!platform)
-    throw new Error(`Unsupported executable platform: ${process.platform}.`);
-  return path.resolve(
-    "artifacts",
-    "mcp-executable",
-    `burnerform-mcp-${platform}-${process.arch}${process.platform === "win32" ? ".exe" : ""}`,
-  );
-}
-
 async function main() {
   const baseUrl = process.env.BURNERFORM_LIFECYCLE_URL;
   if (!baseUrl)
@@ -52,39 +35,7 @@ async function main() {
   const dataDirectory = await mkdtemp(
     path.join(os.tmpdir(), "burnerform-mcp-lifecycle-"),
   );
-  const executable =
-    process.env.BURNERFORM_MCP_EXECUTABLE === "auto"
-      ? nativeExecutablePath()
-      : process.env.BURNERFORM_MCP_EXECUTABLE;
-  const dockerImage = process.env.BURNERFORM_MCP_DOCKER_IMAGE;
-  if (executable && dockerImage)
-    throw new Error(
-      "Choose either BURNERFORM_MCP_EXECUTABLE or BURNERFORM_MCP_DOCKER_IMAGE.",
-    );
-  const command = dockerImage
-    ? "docker"
-    : executable
-      ? path.resolve(executable)
-      : process.execPath;
-  const args = dockerImage
-    ? [
-        "run",
-        "--rm",
-        "-i",
-        "-e",
-        `BURNERFORM_BASE_URL=${baseUrl}`,
-        "-e",
-        "BURNERFORM_DATA_DIR=/data",
-        "-e",
-        "BURNERFORM_SECRET=mcp-lifecycle-installation-secret-123456",
-        "--mount",
-        "type=volume,destination=/data",
-        dockerImage,
-      ]
-    : executable
-      ? []
-      : ["packages/mcp/dist/cli.js"];
-  const child = spawn(command, args, {
+  const child = spawn(process.execPath, ["packages/mcp/dist/cli.js"], {
     cwd: process.cwd(),
     env: {
       ...process.env,

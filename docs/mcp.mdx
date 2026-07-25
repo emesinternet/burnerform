@@ -11,35 +11,31 @@ Install Node.js 24 or newer and the Burnerform MCP command:
 pnpm add --global @burnerform/mcp
 ```
 
-The installed executable is `burnerform-mcp`. It uses stdio for MCP protocol
+The installed command is `burnerform-mcp`. It uses stdio for MCP protocol
 messages and stderr for content-free operational errors.
-
-### Standalone Linux x64
-
-Download `burnerform-mcp-linux-x64` and `SHA256SUMS-linux-x64` from the
-[latest release](https://github.com/emesinternet/burnerform/releases/latest),
-then verify and install the executable:
-
-```bash
-sha256sum --check --ignore-missing SHA256SUMS-linux-x64
-chmod +x burnerform-mcp-linux-x64
-install -m 0755 burnerform-mcp-linux-x64 ~/.local/bin/burnerform-mcp
-```
-
-To remove the executable, delete `~/.local/bin/burnerform-mcp`. Encrypted local
-custody remains under `${XDG_DATA_HOME:-$HOME/.local/share}/burnerform`.
-Delete that directory only after burning or recovering every form you need;
-removing it can permanently remove management and response access.
 
 ## Connect an agent
 
 <Tabs items={["Claude Desktop", "Codex", "Generic stdio"]}>
   <Tab>
-    Download the platform-specific Burnerform `.mcpb` from the
-    [latest release](https://github.com/emesinternet/burnerform/releases/latest).
-    In Claude Desktop, open **Settings → Extensions → Advanced settings →
-    Install Extension** and choose the bundle. Confirm Burnerform appears in
-    the extension list and exposes 15 tools.
+    Add Burnerform to `claude_desktop_config.json` using the npm package:
+
+    ```json
+    {
+      "mcpServers": {
+        "burnerform": {
+          "command": "npx",
+          "args": ["-y", "@burnerform/mcp"],
+          "env": {
+            "BURNERFORM_BASE_URL": "https://burnerform.com"
+          }
+        }
+      }
+    }
+    ```
+
+    Restart Claude Desktop and confirm Burnerform exposes 15 tools.
+
   </Tab>
   <Tab>
     Register the installed command:
