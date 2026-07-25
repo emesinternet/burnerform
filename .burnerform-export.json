@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "9400a9deb31a7a27152c4b056df7e7ca987ac00d",
+  "sourceCommit": "e00174c717598f748f014c83cc276017daf78cbc",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -11,7 +11,7 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "23bdda5a2051c280d618fedfff150de038deb3a23af8b753813105ca7328ef5f"
+      "sha256": "5ab196dd023f23efb81063a268e7c25f539e9ae7e70e43829399ed1b88416a45"
     },
     {
       "path": ".gitignore",
@@ -95,7 +95,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "9e5f41a14693b95948fc85202800d26aa2e0ce5066e139d4812136e8e0c79aad"
+      "sha256": "132c9eeecbb4d28a4c9ae1b761b7f86398262bf207aadfd32262db8538c5c739"
     },
     {
       "path": "packages/core/LICENSE",
@@ -103,7 +103,7 @@
     },
     {
       "path": "packages/core/package.json",
-      "sha256": "2aa53b12303ba2bc57c16c20c730f79011e2cf00b121ae6be2d67c8e0ebd1b9f"
+      "sha256": "df8d0f56f055c62a0993ffd5a17b17439bbd1197b50f7d0a360519af2266cd4e"
     },
     {
       "path": "packages/core/README.md",
@@ -179,7 +179,7 @@
     },
     {
       "path": "packages/core/src/version.ts",
-      "sha256": "36cf6410cb44b47f1e584f70e128b0917cf04b57725e56625e1dbd7fe842e322"
+      "sha256": "bef4a7846ec4f36d270e8b125eced107fd9bf7639cbac253052aea9176e14a1c"
     },
     {
       "path": "packages/mcp/LICENSE",
@@ -187,7 +187,7 @@
     },
     {
       "path": "packages/mcp/package.json",
-      "sha256": "ec54ede2e6d25291a3145aa489931d475615f2a781190bcdc6645e7c43a331ab"
+      "sha256": "fc617d574e6c80b3c200fa7b1f5c0347c530a5ee2cd1dc2c1cae9c671c1ad8db"
     },
     {
       "path": "packages/mcp/README.md",
@@ -219,7 +219,7 @@
     },
     {
       "path": "packages/sdk/package.json",
-      "sha256": "b21858a6af4691698efae360e4c864a051503be55b9af6f8aaeb809115cc53d7"
+      "sha256": "9a87721e5bec7bd650365118eb0ebe306203b417e8a2d0f18100da682928087a"
     },
     {
       "path": "packages/sdk/README.md",
@@ -403,7 +403,7 @@
     },
     {
       "path": "tests/unit/sdk-client.test.ts",
-      "sha256": "e42a31cf27a51ccca7b611a9ea1ee31bceaca1442c55b01d5827d30fe2de5090"
+      "sha256": "5e23dd62ae28dc8954fcc1f5a1cd8adebc1b2339f7ebc90b66ece89b48993782"
     },
     {
       "path": "tsconfig.json",

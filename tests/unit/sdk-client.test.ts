@@ -58,7 +58,7 @@ describe("Burnerform SDK transport", () => {
     expect(String(request)).not.toContain(managementKey);
     const headers = new Headers(fetcher.mock.calls[0]?.[1]?.headers);
     expect(headers.get("x-burner-management-key")).toBe(managementKey);
-    expect(headers.get("x-burnerform-client-version")).toBe("0.1.0");
+    expect(headers.get("x-burnerform-client-version")).toBe("0.1.1");
   });
 
   it("maps stable API failures without returning response bodies", async () => {
