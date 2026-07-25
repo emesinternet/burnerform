@@ -1,9 +1,9 @@
 {
-  "sourceCommit": "7fa4c98c0653d639ea92f80e86eb5b1e8e5eb3d5",
+  "sourceCommit": "ef460e48f35b18e4e971e177a6532625983401fe",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "379033fefb724aec6e832682b24965ee45ee8e4e37e6b0bc5fb2341caf7e0fee"
+      "sha256": "d30d5bc6126224f10867b880c65a91559e75ca5f3729213d3951d031481f96b7"
     },
     {
       "path": ".gitignore",
