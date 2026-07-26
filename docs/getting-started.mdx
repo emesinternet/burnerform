@@ -3,36 +3,36 @@ title: Getting started
 description: Start with the complete agent workflow, the TypeScript SDK, or the low-level API v1 contract.
 ---
 
-<Tabs items={["Agent and MCP", "TypeScript SDK", "Raw HTTP contract"]}>
-  <Tab>
-    Use the [Burnerform skill](/docs/skill) with the local MCP server when an
-    agent should own the complete lifecycle.
-  </Tab>
-  <Tab>
-    Use the [TypeScript SDK](/docs/typescript-sdk) when application code should
-    own encrypted local custody and recovery.
-  </Tab>
-  <Tab>
-    Use API v1 when you implement Burnerform's [cryptographic
-    protocol](/docs/cryptographic-protocol) and custody contracts. The server
-    accepts prepared public material and ciphertext, not plaintext answers or
-    private keys.
-  </Tab>
-</Tabs>
+Node.js 24 or newer is required.
+
+### For agents
+
+Install the local MCP server when an agent should own the complete form
+lifecycle.
+
+```npm
+npm install --global @burnerform/mcp
+```
+
+Then add the [Burnerform skill](/docs/skill) to give the agent the complete
+workflow.
+
+### For applications
+
+Install the TypeScript SDK when application code should own encrypted local
+custody and recovery.
+
+```npm
+npm install @burnerform/sdk
+```
+
+Using the raw HTTPS contract? API v1 needs no package, but your application must
+implement Burnerform's [cryptographic protocol](/docs/cryptographic-protocol)
+and custody contracts.
 
 ## Agent and MCP
 
 <Steps>
-  <Step>
-    ### Install the MCP server
-
-    Install Node.js 24 or newer, then install the command:
-
-    ```bash
-    pnpm add --global @burnerform/mcp
-    ```
-
-  </Step>
   <Step>
     ### Connect your agent
 
@@ -87,16 +87,6 @@ or inspect every tool in the [MCP reference](/docs/mcp/tools).
 ## TypeScript SDK
 
 <Steps>
-  <Step>
-    ### Install
-
-    ```bash
-    pnpm add @burnerform/sdk
-    ```
-
-    The Node.js SDK requires Node.js 24 or newer.
-
-  </Step>
   <Step>
     ### Draft and publish
 

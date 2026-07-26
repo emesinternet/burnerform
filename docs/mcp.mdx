@@ -7,8 +7,8 @@ description: Connect Burnerform to an agent without exposing passwords, creator 
 
 Install Node.js 24 or newer and the Burnerform MCP command:
 
-```bash
-pnpm add --global @burnerform/mcp
+```npm
+npm install --global @burnerform/mcp
 ```
 
 The installed command is `burnerform-mcp`. It uses stdio for MCP protocol
@@ -16,7 +16,18 @@ messages and stderr for content-free operational errors.
 
 ## Connect an agent
 
-<Tabs items={["Claude Desktop", "Codex", "Generic stdio"]}>
+<Tabs items={["Codex", "Claude Desktop", "Generic stdio"]}>
+  <Tab>
+    Register the installed command:
+
+    ```bash
+    codex mcp add burnerform --env BURNERFORM_BASE_URL=https://burnerform.com -- burnerform-mcp
+    ```
+
+    Restart Codex, then use `/mcp` to confirm the server and tools are
+    available.
+
+  </Tab>
   <Tab>
     Add Burnerform to `claude_desktop_config.json` using the npm package:
 
@@ -35,17 +46,6 @@ messages and stderr for content-free operational errors.
     ```
 
     Restart Claude Desktop and confirm Burnerform exposes 15 tools.
-
-  </Tab>
-  <Tab>
-    Register the installed command:
-
-    ```bash
-    codex mcp add burnerform --env BURNERFORM_BASE_URL=https://burnerform.com -- burnerform-mcp
-    ```
-
-    Restart Codex, then use `/mcp` to confirm the server and tools are
-    available.
 
   </Tab>
   <Tab>
