@@ -49,10 +49,10 @@ function service(): BurnerformToolService {
       publicPasswordProtected: false,
       publicPassword: undefined,
     })),
-    updatePublicFormProtection: vi.fn(
-      async (alias: string, protect: boolean) => ({
+    updatePublicFormPassword: vi.fn(
+      async (alias: string, password: string | null) => ({
         alias,
-        publicPasswordProtected: protect,
+        publicPasswordProtected: Boolean(password),
       }),
     ),
     restoreRecoveryData: vi.fn(async (alias: string) => ({
@@ -101,7 +101,7 @@ describe("Burnerform MCP tools", () => {
       "update_expiration",
       "update_response_limit",
       "restore_recovery",
-      "review_form",
+      "open_management",
       "export_recovery",
       "prepare_burn",
       "burn_form",
@@ -203,12 +203,25 @@ describe("Burnerform MCP tools", () => {
       alias: "survey",
       expiresAt: "2026-07-25T12:00:00.000Z",
       maxResponses: 10,
-      protectPublicForm: true,
+      publicAccess: "open",
     });
     const serialized = JSON.stringify(result).toLowerCase();
     expect(serialized).not.toContain("capability");
     expect(serialized).not.toContain("privatekey");
     expect(serialized).not.toContain("recoveryfile");
     expect(serialized).not.toContain('"password"');
+  });
+
+  it("requires an explicit public access choice", () => {
+    const definition = burnerformToolDefinitions.find(
+      (tool) => tool.name === "publish_form",
+    );
+    expect(() =>
+      definition?.inputSchema.parse({
+        alias: "survey",
+        expiresAt: "2026-07-25T12:00:00.000Z",
+        maxResponses: 10,
+      }),
+    ).toThrow();
   });
 });

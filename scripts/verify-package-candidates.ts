@@ -39,17 +39,19 @@ async function exists(target: string) {
 }
 
 async function smokeMcp(workingDirectory: string) {
+  const custodyDirectory = path.join(workingDirectory, "custody");
+  const mcpEnvironment = {
+    ...process.env,
+    BURNERFORM_BASE_URL: "https://burnerform.test",
+    BURNERFORM_DATA_DIR: custodyDirectory,
+    BURNERFORM_SECRET: "package-candidate-installation-secret-123456",
+  };
   const child = spawn(
     process.execPath,
     ["node_modules/@burnerform/mcp/dist/cli.js"],
     {
       cwd: workingDirectory,
-      env: {
-        ...process.env,
-        BURNERFORM_BASE_URL: "https://burnerform.test",
-        BURNERFORM_DATA_DIR: path.join(workingDirectory, "custody"),
-        BURNERFORM_SECRET: "package-candidate-installation-secret-123456",
-      },
+      env: mcpEnvironment,
       stdio: ["pipe", "pipe", "pipe"],
     },
   );
@@ -77,6 +79,23 @@ async function smokeMcp(workingDirectory: string) {
   const result = await response;
   child.stdin.end();
   child.kill();
+  await new Promise<void>((resolve, reject) => {
+    const stop = spawn(
+      process.execPath,
+      ["node_modules/@burnerform/mcp/dist/cli.js", "--stop-broker"],
+      {
+        cwd: workingDirectory,
+        env: mcpEnvironment,
+        stdio: "ignore",
+      },
+    );
+    stop.once("error", reject);
+    stop.once("exit", (code) =>
+      code === 0
+        ? resolve()
+        : reject(new Error("Candidate MCP broker did not stop.")),
+    );
+  });
   if (result.error) throw new Error("Candidate MCP returned an error.");
   const tools = z
     .object({ tools: z.array(z.object({ name: z.string() })).min(1) })

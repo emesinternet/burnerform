@@ -12,11 +12,15 @@ HTTP requests, cryptography, passwords, management keys, or recovery files.
 
 1. Translate the operator's request into the canonical form schema.
 2. Keep the form within 100 fields and the limits exposed by the schema.
-3. Call `draft_form` with a short harmless alias and the complete schema.
-4. Call `publish_form` with expiration, response limit, and whether the public
-   form needs password protection.
-5. Return the public URL and alias. Never claim access to a password,
-   management key, private key, or recovery contents.
+3. Explicitly confirm whether the public form should be open or require a
+   password. If the operator has not said, ask before publishing.
+4. Call `draft_form` with a short purpose-based alias plus a short random suffix
+   and the complete schema. If the alias already exists, choose a new suffix.
+5. Call `publish_form` with expiration, response limit, and the required
+   `publicAccess` choice. For `password`, the operator chooses the password in
+   the trusted local screen; never ask for it in chat.
+6. Return the public URL and alias. Mention that `open_management` is available,
+   but do not call it unless the operator asks.
 
 Autonomous publication generates protected local custody and verifies recovery
 material before succeeding. Do not ask the operator to create, paste, or store
@@ -47,8 +51,8 @@ those secrets.
 - Use `update_expiration` and `update_response_limit` for requested changes.
 - Use `restore_recovery` only when the operator asks to restore access. The
   operator chooses the file and enters its password in the trusted local screen.
-- Use `review_form` only when the operator asks to inspect the form or manage
-  its public password in the trusted local screen.
+- Use `open_management` only when the operator asks to manage the form or copy
+  its installation-local management link.
 - Use `export_recovery` only when the operator requests an out-of-band copy.
 - To burn, call `prepare_burn`, state the irreversible consequence, then call
   `burn_form` once with the returned short-lived challenge.
@@ -62,8 +66,7 @@ those secrets.
 - Never bypass the MCP tools with raw API or crypto code.
 - Never weaken expiration, quotas, validation, recovery verification, or burn
   confirmation.
-- Public form passwords are available only through the trusted local review
-  screen when the operator explicitly asks.
+- Public form passwords are entered and viewed only in trusted local screens.
 - Monitoring ends with the current agent task; do not promise background work.
 
 Read [references/workflows.md](references/workflows.md) for representative

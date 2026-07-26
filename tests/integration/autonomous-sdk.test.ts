@@ -177,7 +177,7 @@ describe("autonomous SDK lifecycle", () => {
       alias: "agent-survey",
       expiresAt: "2026-07-25T12:00:00.000Z",
       maxResponses: 10,
-      protectPublicForm: true,
+      publicPassword: "chosen-public-password",
     });
     expect(published).toEqual({
       alias: "agent-survey",
@@ -277,6 +277,7 @@ describe("autonomous SDK lifecycle", () => {
         alias: "restart-survey",
         expiresAt: "2026-07-25T12:00:00.000Z",
         maxResponses: 10,
+        publicPassword: null,
       }),
     ).rejects.toThrow("connection reset");
     await burnerform.close();
@@ -344,6 +345,7 @@ describe("autonomous SDK lifecycle", () => {
         alias: "early-interruption",
         expiresAt: "2026-07-25T12:00:00.000Z",
         maxResponses: 10,
+        publicPassword: null,
       }),
     ).rejects.toThrow("disk unavailable");
     expect(attempts).toBe(0);
@@ -411,6 +413,7 @@ describe("autonomous SDK lifecycle", () => {
         alias: "late-interruption",
         expiresAt: "2026-07-25T12:00:00.000Z",
         maxResponses: 10,
+        publicPassword: null,
       }),
     ).rejects.toThrow("registry unavailable");
     expect(attempts).toBe(1);
@@ -544,10 +547,14 @@ describe("autonomous SDK lifecycle", () => {
       alias: "restart-mutations",
       expiresAt: "2026-07-25T12:00:00.000Z",
       maxResponses: 10,
+      publicPassword: null,
     });
 
     await expect(
-      burnerform.updatePublicFormProtection("restart-mutations", true),
+      burnerform.updatePublicFormPassword(
+        "restart-mutations",
+        "chosen-public-password",
+      ),
     ).rejects.toThrow("connection reset after protection");
     expect(passwordProtected).toBe(true);
     await burnerform.close();

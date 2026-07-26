@@ -4,7 +4,8 @@ import { formSchema } from "@burnerform/core/form-schema";
 import {
   openLocalRecovery,
   openLocalRespondentAccess,
-  openLocalReview,
+  openLocalManagement,
+  promptLocalPublicPassword,
   type Burnerform,
 } from "@burnerform/sdk/node";
 
@@ -20,7 +21,7 @@ export type BurnerformToolService = Pick<
   | "publishForm"
   | "restoreRecoveryData"
   | "getLocalReview"
-  | "updatePublicFormProtection"
+  | "updatePublicFormPassword"
   | "updateExpiration"
   | "updateResponseLimit"
   | "submitPublicResponse"
@@ -102,7 +103,7 @@ export const burnerformToolDefinitions = [
         alias,
         expiresAt: z.iso.datetime(),
         maxResponses: z.number().int().min(1).max(10_000),
-        protectPublicForm: z.boolean().default(false),
+        publicAccess: z.enum(["open", "password"]),
       })
       .strict(),
     annotations: {
@@ -201,10 +202,10 @@ export const burnerformToolDefinitions = [
     },
   },
   {
-    name: "review_form",
-    title: "Review form",
+    name: "open_management",
+    title: "Open management",
     description:
-      "Open a short-lived trusted local screen to inspect a form or manage its public password without exposing secrets to the agent.",
+      "Open a short-lived trusted local management screen without exposing management access or passwords to the agent.",
     inputSchema: z.object({ alias }).strict(),
     annotations: {
       readOnlyHint: false,
@@ -272,7 +273,7 @@ const [
   updateExpirationTool,
   updateResponseLimitTool,
   restoreRecoveryTool,
-  reviewFormTool,
+  openManagementTool,
   exportRecoveryTool,
   prepareBurnTool,
   burnFormTool,
@@ -283,7 +284,8 @@ type BurnChallenge = {
   expiresAt: number;
 };
 
-type BurnerformToolName = (typeof burnerformToolDefinitions)[number]["name"];
+export type BurnerformToolName =
+  (typeof burnerformToolDefinitions)[number]["name"];
 type BurnerformToolHandler = (
   input: unknown,
   signal?: AbortSignal,
@@ -316,7 +318,19 @@ export class BurnerformToolHandlers {
       },
       publish_form: async (input, signal) => {
         const values = publishFormTool.inputSchema.parse(input);
-        return this.burnerform.publishForm(values, { signal });
+        const publicPassword =
+          values.publicAccess === "password"
+            ? await promptLocalPublicPassword(values.alias, { signal })
+            : null;
+        return this.burnerform.publishForm(
+          {
+            alias: values.alias,
+            expiresAt: values.expiresAt,
+            maxResponses: values.maxResponses,
+            publicPassword,
+          },
+          { signal },
+        );
       },
       get_form: async (input, signal) => {
         const { alias } = getFormTool.inputSchema.parse(input);
@@ -357,9 +371,9 @@ export class BurnerformToolHandlers {
         const { alias } = restoreRecoveryTool.inputSchema.parse(input);
         return openLocalRecovery(this.burnerform, alias);
       },
-      review_form: async (input) => {
-        const { alias } = reviewFormTool.inputSchema.parse(input);
-        return openLocalReview(this.burnerform, alias);
+      open_management: async (input) => {
+        const { alias } = openManagementTool.inputSchema.parse(input);
+        return openLocalManagement(this.burnerform, alias);
       },
       export_recovery: async (input) => {
         const { alias, recoveryTargetDirectory, passwordTargetDirectory } =

@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -70,6 +70,16 @@ async function main() {
   } finally {
     child.kill();
     lines.close();
+    spawnSync(process.execPath, ["packages/mcp/dist/cli.js", "--stop-broker"], {
+      cwd: process.cwd(),
+      env: {
+        ...process.env,
+        BURNERFORM_BASE_URL: "https://burnerform.test",
+        BURNERFORM_DATA_DIR: dataDirectory,
+        BURNERFORM_SECRET: "mcp-smoke-installation-secret-123456",
+      },
+      stdio: "ignore",
+    });
     await rm(dataDirectory, { recursive: true, force: true });
   }
 }

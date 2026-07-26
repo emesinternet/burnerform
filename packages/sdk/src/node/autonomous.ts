@@ -8,10 +8,8 @@ import {
 } from "@burnerform/core/form-schema";
 import {
   decryptResponse,
-  encodeBase64Url,
   encryptResponse,
   importPublicKey,
-  randomBytes,
 } from "@burnerform/core/crypto";
 import {
   BurnerformClient,
@@ -61,7 +59,7 @@ export interface PublishFormOptions {
   alias: string;
   expiresAt: string;
   maxResponses: number;
-  protectPublicForm?: boolean;
+  publicPassword: string | null;
 }
 
 export interface AgentResponse {
@@ -208,13 +206,15 @@ export class Burnerform {
   ) {
     const draft = this.draft(options.alias);
     if (this.registry.get().some((entry) => entry.alias === draft.alias))
-      throw new Error("This alias is already published.");
+      throw new Error(
+        `The local alias "${draft.alias}" is already published. Choose a new alias.`,
+      );
     const prepared = await preparePublication({
       alias: draft.alias,
       schema: draft.schema,
       expiresAt: options.expiresAt,
       maxResponses: options.maxResponses,
-      protectPublicForm: options.protectPublicForm,
+      publicPassword: options.publicPassword,
     });
     const created = await beginAndExecutePublication(
       draft.alias,
@@ -396,29 +396,30 @@ export class Burnerform {
     };
   }
 
-  async updatePublicFormProtection(
+  async updatePublicFormPassword(
     aliasInput: string,
-    protect: boolean,
+    password: string | null,
     requestOptions: BurnerformRequestOptions = {},
   ) {
     return this.withFormMutation(safeAlias(aliasInput), () =>
-      this.updatePublicFormProtectionUnlocked(
+      this.updatePublicFormPasswordUnlocked(
         aliasInput,
-        protect,
+        password,
         requestOptions,
       ),
     );
   }
 
-  private async updatePublicFormProtectionUnlocked(
+  private async updatePublicFormPasswordUnlocked(
     aliasInput: string,
-    protect: boolean,
+    password: string | null,
     requestOptions: BurnerformRequestOptions,
   ) {
     const { entry, access } = await this.unlocked(aliasInput);
     if (!access.managementKey)
       throw new Error("Lifecycle access is unavailable.");
-    const password = protect ? encodeBase64Url(randomBytes(24)) : null;
+    if (password !== null && (password.length < 12 || password.length > 256))
+      throw new Error("Password must be 12–256 characters.");
     const operation = await this.journal.begin(entry.alias, "public_password", {
       password,
     });

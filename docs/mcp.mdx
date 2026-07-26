@@ -67,7 +67,9 @@ messages and stderr for content-free operational errors.
 ## Local custody
 
 Desktop systems use the operating-system credential store and Burnerform's
-default private data directory. Headless systems must provide both variables:
+default private data directory. Every stdio client connects to one
+installation-local broker, so multiple Codex tasks can safely use the same
+forms and drafts. Headless systems must provide both variables:
 
 <TypeTable
   type={{
@@ -88,7 +90,7 @@ default private data directory. Headless systems must provide both variables:
 
 <Callout type="warn" title="Keep custody local">
   Never put `BURNERFORM_SECRET` in source control, prompts, tool arguments, or
-  logs. Do not share one data directory between running processes.
+  logs. The local broker is the only process that owns the custody directory.
 </Callout>
 
 ## Creator workflow
@@ -97,8 +99,9 @@ default private data directory. Headless systems must provide both variables:
   <Step>
     ### Draft the complete schema
 
-    Call `draft_form` with a harmless local `alias` and the canonical `schema`.
-    The result contains only the alias and field count.
+    Call `draft_form` with a harmless purpose-based local `alias`, a short
+    random suffix, and the canonical `schema`. The result contains only the
+    alias and field count.
 
     ```json title="draft_form input"
     {
@@ -125,20 +128,23 @@ default private data directory. Headless systems must provide both variables:
     ### Publish with bounded lifetime
 
     Call `publish_form` with the same alias, an ISO 8601 expiration, a response
-    limit from 1 to 10,000, and whether the public form needs a password.
+    limit from 1 to 10,000, and the explicit public access choice. If password
+    protection was not requested, the agent must ask before publishing.
 
     ```json title="publish_form input"
     {
       "alias": "launch-feedback",
       "expiresAt": "2026-08-01T17:00:00.000Z",
       "maxResponses": 100,
-      "protectPublicForm": false
+      "publicAccess": "open"
     }
     ```
 
     The output contains `alias`, `publicUrl`, `expiresAt`,
     `recoverySaved: true`, and `publicPasswordProtected`. Publication does not
-    return a password, management key, private key, or recovery content.
+    return a password, management key, private key, or recovery content. With
+    `"password"`, a trusted local screen collects the chosen password before
+    publication completes.
 
   </Step>
   <Step>
@@ -210,12 +216,13 @@ default private data directory. Headless systems must provide both variables:
 
 ## Trusted local screens
 
-Three tools intentionally move secret entry outside model context:
+Four tools intentionally move secret entry or management outside model context:
 
 | Tool                 | Local action                                  | Tool-visible result     |
 | -------------------- | --------------------------------------------- | ----------------------- |
 | `unlock_public_form` | Enter a public-form password                  | The local screen opened |
-| `review_form`        | Inspect status or manage public protection    | The local screen opened |
+| `publish_form`       | Choose a password when access is `"password"` | Public URL and status   |
+| `open_management`    | Manage the form or copy its local link        | The local screen opened |
 | `restore_recovery`   | Choose a recovery file and enter its password | The local screen opened |
 
 Each screen binds to `127.0.0.1`, uses an unguessable route and CSRF token,
@@ -235,8 +242,8 @@ or ten minutes.
 - Do not blindly call `publish_form` twice. A published alias cannot be reused.
 - `prepare_burn` challenges are alias-bound, expire after five minutes, and are
   consumed by one `burn_form` attempt.
-- Monitoring exists only while the current agent task and MCP process remain
-  active.
+- One local broker safely serves every Codex task using the same installation.
+- Monitoring exists only while the current agent task remains active.
 
 ## Tool reference
 

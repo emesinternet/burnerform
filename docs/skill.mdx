@@ -65,15 +65,17 @@ reference](/docs/mcp/tools).
   <Step>
     ### Publish
 
-    The agent calls `publish_form` with an expiration, response limit, and
-    optional public-form protection. Burnerform verifies recovery material
-    before publication succeeds.
+    The agent calls `publish_form` with an expiration, response limit, and an
+    explicit open or password-protected access choice. If the request did not
+    specify one, the agent asks first. Password entry stays in the trusted local
+    screen. Burnerform verifies recovery material before publication succeeds.
 
   </Step>
   <Step>
     ### Share and manage
 
-    The agent returns the public URL and local alias. It can use `get_form`,
+    The agent returns the public URL and local alias, then offers
+    `open_management` without opening it automatically. It can use `get_form`,
     `update_expiration`, and `update_response_limit` without exposing the
     management key.
 
@@ -111,8 +113,8 @@ Every agent-published form receives generated and verified recovery material.
   value.
 - `restore_recovery` opens a short-lived trusted local screen where the operator
   chooses the recovery file and enters its password.
-- `review_form` opens the trusted local screen only when the operator asks to
-  inspect the form or manage its public password.
+- `open_management` opens the trusted local management screen only when the
+  operator asks. It is never opened automatically after publication.
 
 See [Recovery](/docs/recovery) for the custody and restore boundary.
 

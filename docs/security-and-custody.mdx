@@ -5,14 +5,16 @@ description: Where Burnerform agent secrets live and where they never go.
 
 ## Desktop
 
-The MCP process stores its installation secret in the operating system
-credential store and encrypts per-form records on disk.
+One local MCP broker stores its installation secret in the operating system
+credential store and encrypts per-form records on disk. Every Codex task talks
+to that broker, so the custody directory always has one owner.
 
 ## Headless systems
 
 Supply a reviewed machine secret through `BURNERFORM_SECRET` and mount a private
-persistent `BURNERFORM_DATA_DIR`. Never share that directory between processes
-or place it in a repository.
+persistent `BURNERFORM_DATA_DIR`. Start clients through `burnerform-mcp` so they
+share its local broker; never mount the directory into unrelated processes or
+place it in a repository.
 
 <Callout type="warn" title="Keep secrets out of model context">
   Passwords, management keys, recovery contents, and full management URLs must
