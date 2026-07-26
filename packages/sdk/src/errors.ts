@@ -8,8 +8,10 @@ export class BurnerformApiError extends Error {
     public readonly status: number,
     public readonly code: ApiV1ErrorCode,
     public readonly correlationId?: string,
+    public readonly description?: string,
+    public readonly retry?: string,
   ) {
-    super(code);
+    super(description ?? code);
     this.name = "BurnerformApiError";
   }
 }
@@ -18,9 +20,15 @@ export async function apiErrorFrom(
   response: Response,
 ): Promise<BurnerformApiError> {
   let code: ApiV1ErrorCode = "internal_error";
+  let description: string | undefined;
+  let retry: string | undefined;
   try {
     const parsed = apiV1ErrorSchema.safeParse(await response.json());
-    if (parsed.success) code = parsed.data.error.code;
+    if (parsed.success) {
+      code = parsed.data.error.code;
+      description = parsed.data.error.message;
+      retry = parsed.data.error.retry;
+    }
   } catch {
     // A non-JSON upstream failure is still represented as a typed API error.
   }
@@ -28,5 +36,7 @@ export async function apiErrorFrom(
     response.status,
     code,
     response.headers.get("x-correlation-id") ?? undefined,
+    description,
+    retry,
   );
 }
