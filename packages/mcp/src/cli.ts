@@ -1,24 +1,37 @@
 #!/usr/bin/env node
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { Burnerform, EnvironmentSecretProvider } from "@burnerform/sdk/node";
+import { defaultBurnerformDataDirectory } from "@burnerform/sdk/node";
+import {
+  createBrokerCaller,
+  ensureBroker,
+  runBroker,
+  stopBroker,
+} from "./broker";
 import { createBurnerformMcpServer } from "./server";
 
 async function main() {
   const baseUrl = process.env.BURNERFORM_BASE_URL ?? "https://burnerform.com";
-  const secretProvider = process.env.BURNERFORM_SECRET
-    ? new EnvironmentSecretProvider()
-    : undefined;
-  const burnerform = await Burnerform.open({
+  const options = {
     baseUrl,
-    dataDirectory: process.env.BURNERFORM_DATA_DIR,
-    secretProvider,
-  });
-  await burnerform.reconcile();
-  const server = createBurnerformMcpServer(burnerform);
+    dataDirectory:
+      process.env.BURNERFORM_DATA_DIR ?? defaultBurnerformDataDirectory(),
+    secretMode: process.env.BURNERFORM_SECRET
+      ? ("environment" as const)
+      : ("keyring" as const),
+  };
+  if (process.argv.includes("--broker")) {
+    await runBroker(options);
+    return;
+  }
+  if (process.argv.includes("--stop-broker")) {
+    await stopBroker(options);
+    return;
+  }
+  await ensureBroker(options);
+  const server = createBurnerformMcpServer(createBrokerCaller(options));
   const shutdown = async () => {
     await server.close();
-    await burnerform.close();
   };
   process.once("SIGINT", () => void shutdown());
   process.once("SIGTERM", () => void shutdown());

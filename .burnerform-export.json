@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "7d27bf96ce78bef9992bf4685eb8c7e9fd894e85",
+  "sourceCommit": "25c217ea59e684a8d2615a2223a76b55a1a53617",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -43,7 +43,7 @@
     },
     {
       "path": "docs/compatibility.mdx",
-      "sha256": "4c8678110cafcb823294cc08ad14d372f2e57e552301cdfbe3e044c6be4c6ff3"
+      "sha256": "a450f123f5f29c24e931470eaa22f76d768a430d96f958841f32109ef8380f3b"
     },
     {
       "path": "docs/concepts.mdx",
@@ -59,15 +59,15 @@
     },
     {
       "path": "docs/examples.mdx",
-      "sha256": "d5671d3aa07d9cc684f856866e0f30cde17d22fe9e5fa2beaa84da04ec834b85"
+      "sha256": "38344e8d6d7c062f0dc496eb971fa4d5327a0ae967f781abc129b0e6da189b0c"
     },
     {
       "path": "docs/getting-started.mdx",
-      "sha256": "b604af4662df2e90ff52760e6b2bfe0782d9a2e004c4b3e0db78ab77dbbdad4e"
+      "sha256": "182575f8be6d7f0f60542b3de52bea84f94d0f7a4c7355f5cbfec170fc4447b1"
     },
     {
       "path": "docs/mcp.mdx",
-      "sha256": "cf5f626e2056135940700e707f34933dcfa2eb7620bd8ef4106405f6afe95cc6"
+      "sha256": "b9b7fedc8036cf6cc56b45a41fa408bbfc3286526654fed1fff7ef91eebb4247"
     },
     {
       "path": "docs/recovery.mdx",
@@ -79,11 +79,11 @@
     },
     {
       "path": "docs/security-and-custody.mdx",
-      "sha256": "7813c9c8e3f9153131603d8f0b9f9ab43ec8af83596a8330de653a6df8b81906"
+      "sha256": "d1e21f933e0f374fb27a630c59d8df520287d819c6ceaf935574035856236fc5"
     },
     {
       "path": "docs/skill.mdx",
-      "sha256": "4976c6cc628af3c4a3456322c0c21d58a60276ee7dbfed8eed8915b4a9ad6149"
+      "sha256": "017de4fc3e12ba2b95ca77b9637e46538b05bce96f05362f7cd69025cea3caf5"
     },
     {
       "path": "eslint.config.mjs",
@@ -95,7 +95,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "75687ccdd1a095e7bf146b00c538f9080b79f0c77aad091a8ca437a375ce1dc6"
+      "sha256": "db54e0f5daf11b70816b506bbe49006b7bdc78ad68164700ad99ba3d3aac9578"
     },
     {
       "path": "packages/core/LICENSE",
@@ -103,7 +103,7 @@
     },
     {
       "path": "packages/core/package.json",
-      "sha256": "408ff70872f5862fc80b4ad9cc85e6537fdbdcf5e60c33a179dbdd8052855857"
+      "sha256": "0792592da0e6328b42fc24b701d931d05687c01bca92639d95aa6657d6c63f5c"
     },
     {
       "path": "packages/core/README.md",
@@ -179,7 +179,7 @@
     },
     {
       "path": "packages/core/src/version.ts",
-      "sha256": "639385b528204928f4ad80c4f524fe6fddb8dcac382695709ef664c1bcc93095"
+      "sha256": "5f49cdae21d5ba8d8ba4aff3c4813b24afab32014304eb994103406c8285f87a"
     },
     {
       "path": "packages/mcp/LICENSE",
@@ -187,15 +187,19 @@
     },
     {
       "path": "packages/mcp/package.json",
-      "sha256": "089d77de5c3a80c29d1af539f2e173e9664f13d76ad6fb0015f4a7de37b3a402"
+      "sha256": "103433d7691687d011e29d046e9d94ae13e651523c894bfee9fd405c2988abf4"
     },
     {
       "path": "packages/mcp/README.md",
-      "sha256": "b19d6df189f38cabcb2918e4dd23af5916925ee9a3e777d0cfca8eaa858b745b"
+      "sha256": "4432be254bed2bfdff7ce6f81e73d0f832ef713d7570230a8514fd6d9c51d0bb"
+    },
+    {
+      "path": "packages/mcp/src/broker.ts",
+      "sha256": "1becf88474e390a970d9835fd6d84016d5bb22d9db21ffefe4adc2ca704e1c50"
     },
     {
       "path": "packages/mcp/src/cli.ts",
-      "sha256": "58b195e65133f3d8ca79898f60ff4183c80d83afcb6d73b659585ae25a1de9c5"
+      "sha256": "22b2dd43d76dd16b2b1da24559a4b55ecfad5a6e42aa30a0a097b480f208b2b0"
     },
     {
       "path": "packages/mcp/src/index.ts",
@@ -203,11 +207,11 @@
     },
     {
       "path": "packages/mcp/src/server.ts",
-      "sha256": "bd587fa7112158e3534646df9258a2a09876d147bd0c9f6ae579df78ac35efb4"
+      "sha256": "7560f87374b0b5f00af37f473d71314157b331a810c66bc30ba58953a8785ec0"
     },
     {
       "path": "packages/mcp/src/tool-registry.ts",
-      "sha256": "a36389e9f0c388d97f94b626916e735993480aa1d593923883ff92e2ef8b86ea"
+      "sha256": "5d92e0132bfb926cdf5eee8d50fe7ede11ff290143f03376f07c8f146659a93c"
     },
     {
       "path": "packages/sdk/LICENSE",
@@ -215,11 +219,11 @@
     },
     {
       "path": "packages/sdk/package.json",
-      "sha256": "34b605ff692b8a53df9373ca013a374a8d5afc593b631f88d20aecee9d37ebc8"
+      "sha256": "ca9d1bb7e299af59f88b8e5ff62f3d72d552bb8353d5501e46a7888cecb5096b"
     },
     {
       "path": "packages/sdk/README.md",
-      "sha256": "d1e9def9b31112426d142b7fb6243761f3393609ba3b31a0e1bb185f1c43daea"
+      "sha256": "2a8a2e58d77a8cf8507ffde26d5611149211907bbc1de4256fb5fe74913ceb85"
     },
     {
       "path": "packages/sdk/src/client.ts",
@@ -267,7 +271,7 @@
     },
     {
       "path": "packages/sdk/src/node/autonomous.ts",
-      "sha256": "5782b3a403068f8ddd97820f4a4e95182c73bca165f102a3c1abb36c8d0e28fe"
+      "sha256": "5d6fed2b3c5bae82cbf86f815a8113ee8c262f313b5db8bc80f6745fb90fbf59"
     },
     {
       "path": "packages/sdk/src/node/directory-lock.ts",
@@ -295,7 +299,7 @@
     },
     {
       "path": "packages/sdk/src/node/local-review.ts",
-      "sha256": "7149e0f872f6c35003fa8b4692f6b6ded41db991050d93e47f617ecd6a2ca645"
+      "sha256": "ea1c2b351ec29e52ba50ea3d7a729276172f1d5539bb343ae7cae376bcad9c31"
     },
     {
       "path": "packages/sdk/src/node/operation-journal.ts",
@@ -307,7 +311,7 @@
     },
     {
       "path": "packages/sdk/src/node/publication-coordinator.ts",
-      "sha256": "bfd5f726263fc0097ccb3de2c737f54f6eb84fef432be73955fcb9aed17d93a3"
+      "sha256": "13ab9a372115dc0e8a7c0c5790a254902d06b90fc5235acdd50c5c1e84fc8f9e"
     },
     {
       "path": "packages/sdk/src/node/secret-provider.ts",
@@ -359,19 +363,19 @@
     },
     {
       "path": "scripts/smoke-mcp.ts",
-      "sha256": "a535a222dddb00cef7da742e528dc5266ccced70e408632068703b6023d07fd0"
+      "sha256": "24008ef9bc5862a59c6e2abdf08ac85e188ce1a2c5e5dd2e75f23c30e1e61fa6"
     },
     {
       "path": "scripts/verify-mcp-lifecycle.ts",
-      "sha256": "92650d059461fb0d94336e5628b8217eab993fcca997bbad2b73bf73a8737a19"
+      "sha256": "5d63df30b796aaf3a51347351cd968f1a285677f620fc4e94979ac4bcfb2746e"
     },
     {
       "path": "scripts/verify-package-candidates.ts",
-      "sha256": "e93ee4d75531700c7307a81abca2f0cd7c2e89e89e1f4e659a6da7a4c7bdce00"
+      "sha256": "3aa10d3b151024c657e97deed03cc12e4d76279ae4328f5f9926bd2c4cccf3c1"
     },
     {
       "path": "scripts/verify-recovery-lifecycle.ts",
-      "sha256": "b271df81674c64bda28a9967a8d33b7a85f5bc658bb2d1590d7b111bab568614"
+      "sha256": "71e77620c0c87ddd623c8c77338dfd6948b28b62d8b29f01e4ecb2f2e717d52b"
     },
     {
       "path": "skills/burnerform/agents/openai.yaml",
@@ -379,15 +383,15 @@
     },
     {
       "path": "skills/burnerform/references/workflows.md",
-      "sha256": "b3a0c887ced6f326ee58f8a2aa0b3b850dafa633211a02aad6bf0070e25a11d9"
+      "sha256": "ee7a71e060c9ce853693ee0638e5d540bed94c21595669b81e4bdd27dead64f7"
     },
     {
       "path": "skills/burnerform/SKILL.md",
-      "sha256": "da7fa0517cb500fc45283a625a32acfb08a995f4dad347ad7df9219a4d772ac0"
+      "sha256": "70b394dcc93c5731f1dbf974f16d6ff8b70ba71bf833e257f56e5fafc476a390"
     },
     {
       "path": "tests/integration/autonomous-sdk.test.ts",
-      "sha256": "d2546c5b715e8268bfd80265b6946380bf4e3bb808d2490146eb163d5efa2cc4"
+      "sha256": "1ffbb4473ffea1db029cbee84cb527b9480f43d75b352cb77aa05298f7795709"
     },
     {
       "path": "tests/security/envelope.test.ts",
@@ -395,19 +399,23 @@
     },
     {
       "path": "tests/security/local-review.test.ts",
-      "sha256": "237734f6cb04b035b06f20c7ca249c7cdbde3fc4b2436cd8b42c5d03a34ffbe0"
+      "sha256": "ccf95bc7c702e0f3bd731a9acd5adc9b069898cc9f103a4127c46f92480d0fc8"
     },
     {
       "path": "tests/security/node-custody.test.ts",
       "sha256": "4be41bb50f3fc5c8fb42c0043c5ff9002298651c6c368161d2fc780d1533b879"
     },
     {
+      "path": "tests/unit/mcp-broker.test.ts",
+      "sha256": "cb86bf981949ce33cc7f785e0eb9f936cebad70ac4f16f3d43d0d43dc543c7e3"
+    },
+    {
       "path": "tests/unit/mcp-tools.test.ts",
-      "sha256": "b4c65143943e247d112321cfb150f3aabf57a5cc9a1ec0d65c9eff8e48891f61"
+      "sha256": "993f0faec24b61b9bb98e49dbaf96df125700a460453e040831170d68a49e0b1"
     },
     {
       "path": "tests/unit/sdk-client.test.ts",
-      "sha256": "7137ef30355677f540a0546b899c6d598f11692e5be92f7ee1f59d3def17395a"
+      "sha256": "6310aa73b62881d23e4917618ed0ad800fa984b2eab7b1b241c9875ace589a07"
     },
     {
       "path": "tsconfig.json",

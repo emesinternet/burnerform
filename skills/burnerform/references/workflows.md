@@ -6,16 +6,20 @@ User: “Create a feedback form with name, email, rating, and comments. Keep it
 open for seven days or 100 responses.”
 
 1. `draft_form`
-2. `publish_form`
-3. Return the public URL and alias.
+2. If password protection was not specified, ask the operator to choose open or
+   password-protected access.
+3. `publish_form` with `publicAccess: "open"` or `"password"`.
+4. Return the public URL and alias, and offer `open_management` without calling
+   it automatically.
 
 ## Password-protected public form
 
 User: “Make a private RSVP form that needs a password.”
 
-Set `protectPublicForm: true` on `publish_form`. Burnerform generates and stores
-the password outside model context. Use `review_form` when the operator
-explicitly asks to retrieve it through the trusted local screen.
+Set `publicAccess: "password"` on `publish_form`. The operator chooses the
+password in the trusted local screen. The password stays outside model context.
+Use `open_management` only when the operator explicitly asks to manage the form
+or copy its installation-local management link.
 
 ## Monitor to a target
 

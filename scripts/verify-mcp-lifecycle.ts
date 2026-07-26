@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -124,7 +124,7 @@ async function main() {
       alias,
       expiresAt: new Date(Date.now() + 24 * 60 * 60_000).toISOString(),
       maxResponses: 3,
-      protectPublicForm: false,
+      publicAccess: "open",
     });
     const publicUrl = z.url().parse(published.publicUrl);
     await call("inspect_public_form", { publicUrl });
@@ -165,6 +165,16 @@ async function main() {
   } finally {
     child.kill();
     lines.close();
+    spawnSync(process.execPath, ["packages/mcp/dist/cli.js", "--stop-broker"], {
+      cwd: process.cwd(),
+      env: {
+        ...process.env,
+        BURNERFORM_BASE_URL: baseUrl,
+        BURNERFORM_DATA_DIR: dataDirectory,
+        BURNERFORM_SECRET: "mcp-lifecycle-installation-secret-123456",
+      },
+      stdio: "ignore",
+    });
     await rm(dataDirectory, { recursive: true, force: true });
   }
 }

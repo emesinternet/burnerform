@@ -9,6 +9,8 @@ https://burnerform.com/docs for the complete API, security, and custody model.
 Requests time out after 30 seconds by default. Pass an `AbortSignal` through a
 method's final options argument to support caller cancellation. Successful
 responses must advertise the expected API version and supported client range.
+Node publication requires an explicit `publicPassword` string or `null`; it
+never silently chooses public access.
 
 API failures reject with `BurnerformApiError`. It exposes the HTTP `status`,
 typed `code`, public `description`, safe `retry` guidance, and optional

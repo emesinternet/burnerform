@@ -3,7 +3,8 @@ import { request } from "node:http";
 import {
   openLocalRecovery,
   openLocalRespondentAccess,
-  openLocalReview,
+  openLocalManagement,
+  promptLocalPublicPassword,
 } from "@burnerform/sdk/node";
 
 function hiddenValue(html: string, name: string) {
@@ -23,7 +24,7 @@ function requestWithHost(url: string, host: string) {
   });
 }
 
-describe("trusted local review", () => {
+describe("trusted local screens", () => {
   it("uses an unguessable local route and enforces host, origin, and CSRF", async () => {
     let reviewUrl = "";
     let passwordProtected = true;
@@ -38,12 +39,14 @@ describe("trusted local review", () => {
         publicPasswordProtected: passwordProtected,
         publicPassword: "local-only-password",
       })),
-      updatePublicFormProtection: vi.fn(async (_alias, protect: boolean) => {
-        passwordProtected = protect;
-        return { publicPasswordProtected: passwordProtected };
-      }),
+      updatePublicFormPassword: vi.fn(
+        async (_alias, password: string | null) => {
+          passwordProtected = Boolean(password);
+          return { publicPasswordProtected: passwordProtected };
+        },
+      ),
     };
-    const result = await openLocalReview(service, "survey", {
+    const result = await openLocalManagement(service, "survey", {
       openBrowser(url) {
         reviewUrl = url;
       },
@@ -59,6 +62,7 @@ describe("trusted local review", () => {
     expect(page.status).toBe(200);
     const html = await page.text();
     expect(html).toContain("local-only-password");
+    expect(html).toContain(`value="${reviewUrl}"`);
     const csrf = hiddenValue(html, "csrf");
 
     expect(await requestWithHost(reviewUrl, "attacker.test")).toBe(403);
@@ -82,7 +86,7 @@ describe("trusted local review", () => {
       body: "action=remove&csrf=wrong",
     });
     expect(wrongCsrf.status).toBe(403);
-    expect(service.updatePublicFormProtection).not.toHaveBeenCalled();
+    expect(service.updatePublicFormPassword).not.toHaveBeenCalled();
 
     const updated = await fetch(reviewUrl, {
       method: "POST",
@@ -94,10 +98,45 @@ describe("trusted local review", () => {
     });
     expect(updated.status).toBe(200);
     expect(await updated.text()).toContain("Public form access updated.");
-    expect(service.updatePublicFormProtection).toHaveBeenCalledWith(
+    expect(service.updatePublicFormPassword).toHaveBeenCalledWith(
       "survey",
-      false,
+      null,
     );
+  });
+
+  it("collects a new public password without returning it to the caller", async () => {
+    let passwordUrl = "";
+    const pending = promptLocalPublicPassword("survey", {
+      openBrowser(url) {
+        passwordUrl = url;
+      },
+    });
+    await vi.waitFor(() => expect(passwordUrl).not.toBe(""));
+    const html = await (await fetch(passwordUrl)).text();
+    const csrf = hiddenValue(html, "csrf");
+    const saved = await fetch(passwordUrl, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        origin: new URL(passwordUrl).origin,
+      },
+      body: new URLSearchParams({
+        csrf,
+        password: "chosen-local-password",
+      }),
+    });
+    expect(saved.status).toBe(200);
+    await expect(pending).resolves.toBe("chosen-local-password");
+  });
+
+  it("cancels password entry without publishing a password", async () => {
+    const controller = new AbortController();
+    const pending = promptLocalPublicPassword("survey", {
+      signal: controller.signal,
+      openBrowser() {},
+    });
+    controller.abort(new Error("cancelled"));
+    await expect(pending).rejects.toThrow("cancelled");
   });
 
   it("keeps recovery material in the local form submission", async () => {

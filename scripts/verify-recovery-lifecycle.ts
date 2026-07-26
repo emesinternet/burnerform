@@ -61,6 +61,7 @@ async function main() {
       alias,
       expiresAt: new Date(Date.now() + 24 * 60 * 60_000).toISOString(),
       maxResponses: 2,
+      publicPassword: null,
     });
     const passwordDirectory = path.join(root, "exported-password");
     await source.exportRecovery(alias, exportDirectory, passwordDirectory);

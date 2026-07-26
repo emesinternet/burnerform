@@ -179,6 +179,7 @@ try {
     alias: "launch-feedback",
     expiresAt: "2026-08-01T18:00:00.000Z",
     maxResponses: 100,
+    publicPassword: null,
   });
 
   console.log(published.publicUrl);
@@ -192,24 +193,24 @@ try {
 
 ## Protect a public form
 
-Set `protectPublicForm` during publication. Burnerform generates the public-form
-password and retains it in encrypted local custody.
+Pass an explicit public password during direct SDK publication. MCP users choose
+password access explicitly and enter the password in a trusted local screen.
 
 ```ts
 const published = await burnerform.publishForm({
   alias: "private-intake",
   expiresAt: "2026-08-02T18:00:00.000Z",
   maxResponses: 25,
-  protectPublicForm: true,
+  publicPassword: chosenPassword,
 });
 
 console.log(published.publicUrl);
 console.log(published.publicPasswordProtected); // true
 ```
 
-An MCP agent uses `review_form` to open the trusted local screen when the
-operator needs to view or change that password. The password is not returned to
-the agent.
+An MCP agent uses `open_management` only when the operator asks. The trusted
+screen can manage the password and copy the installation-local management link.
+Neither is returned to the agent.
 
 ## Monitor and read responses
 
@@ -255,7 +256,7 @@ await burnerform.updateExpiration(
 
 await burnerform.updateResponseLimit("launch-feedback", 250);
 
-await burnerform.updatePublicFormProtection("launch-feedback", true);
+await burnerform.updatePublicFormPassword("launch-feedback", chosenPassword);
 ```
 
 The form schema and response-access mode do not change after publication.

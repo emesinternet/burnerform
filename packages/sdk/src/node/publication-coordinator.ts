@@ -48,14 +48,12 @@ export async function preparePublication(input: {
   schema: FormSchema;
   expiresAt: string;
   maxResponses: number;
-  protectPublicForm?: boolean;
+  publicPassword: string | null;
 }): Promise<PreparedPublish> {
   const formId = encodeBase64Url(randomBytes(16));
   const keyId = encodeBase64Url(randomBytes(16));
   const responsePassword = encodeBase64Url(randomBytes(32));
-  const publicPassword = input.protectPublicForm
-    ? encodeBase64Url(randomBytes(24))
-    : undefined;
+  const publicPassword = input.publicPassword ?? undefined;
   const temporaryStore = new MemoryCustodyStore();
   const custody = await provisionCreatorCustody({
     formId,

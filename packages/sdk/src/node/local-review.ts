@@ -18,11 +18,11 @@ interface ReviewData {
   publicPassword?: string;
 }
 
-export interface LocalReviewService {
+export interface LocalManagementService {
   getLocalReview(alias: string): Promise<ReviewData>;
-  updatePublicFormProtection(
+  updatePublicFormPassword(
     alias: string,
-    protect: boolean,
+    password: string | null,
   ): Promise<{ publicPasswordProtected: boolean }>;
 }
 
@@ -44,11 +44,14 @@ export interface LocalRespondentAccessService {
 interface LocalPageContext {
   csrf: string;
   expectedOrigin: string;
+  pageUrl: string;
+  scriptNonce: string;
   closeAfterResponse(): void;
 }
 
 interface LocalPageOptions {
   openBrowser?: (url: string) => void;
+  signal?: AbortSignal;
   startError: string;
   handle(
     request: IncomingMessage,
@@ -80,14 +83,20 @@ function openBrowser(url: string) {
   child.unref();
 }
 
-function page(data: ReviewData, csrf: string, notice = "") {
+function managementPage(
+  data: ReviewData,
+  csrf: string,
+  pageUrl: string,
+  scriptNonce: string,
+  notice = "",
+) {
   const protectionAction = data.publicPasswordProtected ? "remove" : "add";
   const protectionLabel = data.publicPasswordProtected
     ? "Remove public password"
     : "Protect public form";
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>Review ${escapeHtml(data.alias)} · Burnerform</title>
+<title>Manage ${escapeHtml(data.alias)} · Burnerform</title>
 <style>
 :root{color-scheme:light dark;font:16px system-ui,sans-serif;background:#111;color:#fff}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
@@ -96,19 +105,23 @@ h1{margin:0 0 8px;font-size:2rem}p{color:#b9b9b9}dl{display:grid;grid-template-c
 dt{color:#b9b9b9}dd{margin:0;min-width:0;overflow-wrap:anywhere}
 .secret{font:14px ui-monospace,monospace;padding:12px;background:#282828;border-radius:6px;color:#fff}
 .notice{color:#ff8a55}a{color:#ff632b}button{border:0;border-radius:6px;padding:10px 14px;background:#d9470c;color:#fff;font:inherit;font-weight:650;cursor:pointer}
+input{width:100%;border:1px solid #444;border-radius:6px;padding:10px;background:#282828;color:#fff}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 </style></head><body><main>
 <h1>${escapeHtml(data.alias)}</h1>
-<p>Review this form without exposing its local custody to the agent.</p>
+<p>Manage this form without exposing its local custody to the agent.</p>
 ${notice ? `<p class="notice" role="status">${escapeHtml(notice)}</p>` : ""}
 <dl>
 <dt>Status</dt><dd>${escapeHtml(data.status)}</dd>
 <dt>Responses</dt><dd>${escapeHtml(data.responseCount)} / ${escapeHtml(data.maxResponses)}</dd>
 <dt>Expires</dt><dd>${escapeHtml(new Date(data.expiresAt).toLocaleString())}</dd>
 <dt>Public form</dt><dd><a href="${escapeHtml(data.publicUrl)}">${escapeHtml(data.publicUrl)}</a></dd>
+<dt>Management link</dt><dd><div class="actions"><input id="management-link" readonly value="${escapeHtml(pageUrl)}"><button type="button" id="copy-management-link">Copy</button></div></dd>
 <dt>Public password</dt><dd>${data.publicPassword ? `<div class="secret">${escapeHtml(data.publicPassword)}</div>` : "Not required"}</dd>
 </dl>
 <form method="post"><input type="hidden" name="csrf" value="${escapeHtml(csrf)}"><input type="hidden" name="action" value="${protectionAction}">
+${data.publicPasswordProtected ? "" : '<label>New public password<input required minlength="12" maxlength="256" type="password" name="password" autocomplete="new-password"></label>'}
 <button type="submit">${protectionLabel}</button></form>
+<script nonce="${escapeHtml(scriptNonce)}">document.getElementById("copy-management-link").addEventListener("click",async()=>{const input=document.getElementById("management-link");await navigator.clipboard.writeText(input.value);});</script>
 </main></body></html>`;
 }
 
@@ -125,8 +138,13 @@ async function readBody(request: IncomingMessage) {
 }
 
 async function openLocalPage(options: LocalPageOptions) {
+  if (options.signal?.aborted)
+    throw options.signal.reason instanceof Error
+      ? options.signal.reason
+      : new Error("Operation cancelled.");
   const routeToken = encodeBase64Url(randomBytes(24));
   const csrf = encodeBase64Url(randomBytes(24));
+  const scriptNonce = encodeBase64Url(randomBytes(24));
   let expectedOrigin = "";
   const timer = { current: undefined as NodeJS.Timeout | undefined };
   const server = createServer(async (request, response) => {
@@ -139,6 +157,8 @@ async function openLocalPage(options: LocalPageOptions) {
     await options.handle(request, response, {
       csrf,
       expectedOrigin,
+      pageUrl: `${expectedOrigin}/${routeToken}`,
+      scriptNonce,
       closeAfterResponse() {
         response.once("finish", () => {
           if (timer.current) clearTimeout(timer.current);
@@ -160,26 +180,36 @@ async function openLocalPage(options: LocalPageOptions) {
   expectedOrigin = `http://127.0.0.1:${address.port}`;
   timer.current = setTimeout(() => server.close(), 10 * 60_000);
   timer.current.unref();
+  const abort = () => server.close();
+  options.signal?.addEventListener("abort", abort, { once: true });
+  server.once("close", () =>
+    options.signal?.removeEventListener("abort", abort),
+  );
   (options.openBrowser ?? openBrowser)(`${expectedOrigin}/${routeToken}`);
 }
 
-export async function openLocalReview(
-  service: LocalReviewService,
+export async function openLocalManagement(
+  service: LocalManagementService,
   alias: string,
   options: { openBrowser?: (url: string) => void } = {},
 ) {
   await openLocalPage({
     ...options,
-    startError: "The local review server could not start.",
-    async handle(request, response, { csrf, expectedOrigin }) {
+    startError: "The local management server could not start.",
+    async handle(
+      request,
+      response,
+      { csrf, expectedOrigin, pageUrl, scriptNonce },
+    ) {
       try {
         if (request.method === "GET") {
           const data = await service.getLocalReview(alias);
           return send(
             response,
             200,
-            page(data, csrf),
+            managementPage(data, csrf, pageUrl, scriptNonce),
             "text/html; charset=utf-8",
+            scriptNonce,
           );
         }
         if (
@@ -192,13 +222,31 @@ export async function openLocalReview(
         const action = form.get("action");
         if (action !== "add" && action !== "remove")
           return send(response, 400, "Invalid action");
-        await service.updatePublicFormProtection(alias, action === "add");
+        const password = form.get("password");
+        if (
+          action === "add" &&
+          (typeof password !== "string" ||
+            password.length < 12 ||
+            password.length > 256)
+        )
+          return send(response, 400, "Password must be 12–256 characters.");
+        await service.updatePublicFormPassword(
+          alias,
+          action === "add" ? (password as string) : null,
+        );
         const data = await service.getLocalReview(alias);
         return send(
           response,
           200,
-          page(data, csrf, "Public form access updated."),
+          managementPage(
+            data,
+            csrf,
+            pageUrl,
+            scriptNonce,
+            "Public form access updated.",
+          ),
           "text/html; charset=utf-8",
+          scriptNonce,
         );
       } catch {
         return send(response, 500, "Burnerform could not update this form.");
@@ -206,6 +254,66 @@ export async function openLocalReview(
     },
   });
   return { alias, opened: true as const, expiresInMinutes: 10 };
+}
+
+export async function promptLocalPublicPassword(
+  alias: string,
+  options: { openBrowser?: (url: string) => void; signal?: AbortSignal } = {},
+) {
+  let acceptPassword: ((password: string) => void) | undefined;
+  let rejectPassword: ((error: Error) => void) | undefined;
+  const password = new Promise<string>((resolve, reject) => {
+    acceptPassword = resolve;
+    rejectPassword = reject;
+  });
+  const abort = () =>
+    rejectPassword?.(
+      options.signal?.reason instanceof Error
+        ? options.signal.reason
+        : new Error("Operation cancelled."),
+    );
+  options.signal?.addEventListener("abort", abort, { once: true });
+  await openLocalPage({
+    ...options,
+    startError: "The local password screen could not start.",
+    async handle(
+      request,
+      response,
+      { csrf, expectedOrigin, closeAfterResponse },
+    ) {
+      if (request.method === "GET")
+        return send(
+          response,
+          200,
+          publicPasswordPage(alias, csrf),
+          "text/html; charset=utf-8",
+        );
+      if (
+        request.method !== "POST" ||
+        request.headers.origin !== expectedOrigin
+      )
+        return send(response, 403, "Forbidden");
+      const form = new URLSearchParams(await readBody(request));
+      if (form.get("csrf") !== csrf) return send(response, 403, "Forbidden");
+      const value = form.get("password");
+      if (!value || value.length < 12 || value.length > 256)
+        return send(response, 400, "Password must be 12–256 characters.");
+      acceptPassword?.(value);
+      closeAfterResponse();
+      return send(response, 200, "Password saved. You can close this window.");
+    },
+  });
+  const timeout = setTimeout(
+    () => rejectPassword?.(new Error("Password entry timed out.")),
+    10 * 60_000,
+  );
+  timeout.unref();
+  try {
+    return await password;
+  } finally {
+    clearTimeout(timeout);
+    options.signal?.removeEventListener("abort", abort);
+  }
 }
 
 export async function openLocalRecovery(
@@ -374,6 +482,26 @@ ${notice ? `<p class="notice" role="status">${escapeHtml(notice)}</p>` : ""}
 </main></body></html>`;
 }
 
+function publicPasswordPage(alias: string, csrf: string) {
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Protect ${escapeHtml(alias)} · Burnerform</title>
+<style>
+:root{color-scheme:light dark;font:16px system-ui,sans-serif;background:#111;color:#fff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+main{width:min(560px,100%);border:1px solid #3a3a3a;border-radius:10px;padding:28px;background:#181818}
+h1{margin:0 0 8px;font-size:2rem}p{color:#b9b9b9}
+label{display:grid;gap:8px;margin:20px 0}input{width:100%;border:1px solid #444;border-radius:6px;padding:10px;background:#282828;color:#fff}
+button{border:0;border-radius:6px;padding:10px 14px;background:#d9470c;color:#fff;font:inherit;font-weight:650;cursor:pointer}
+</style></head><body><main>
+<h1>Protect ${escapeHtml(alias)}</h1>
+<p>Choose the public password. It stays in this trusted local screen.</p>
+<form method="post"><input type="hidden" name="csrf" value="${escapeHtml(csrf)}">
+<label>Public password<input required minlength="12" maxlength="256" type="password" name="password" autocomplete="new-password"></label>
+<button type="submit">Save password</button></form>
+</main></body></html>`;
+}
+
 async function readBytes(request: IncomingMessage, maximum: number) {
   const chunks: Buffer[] = [];
   let length = 0;
@@ -391,11 +519,11 @@ function send(
   status: number,
   body: string,
   contentType = "text/plain; charset=utf-8",
+  scriptNonce?: string,
 ) {
   response.writeHead(status, {
     "content-type": contentType,
-    "content-security-policy":
-      "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+    "content-security-policy": `default-src 'none'; style-src 'unsafe-inline'; script-src${scriptNonce ? ` 'nonce-${scriptNonce}'` : " 'none'"}; form-action 'self'; base-uri 'none'; frame-ancestors 'none'`,
     "referrer-policy": "no-referrer",
     "x-content-type-options": "nosniff",
     "cache-control": "no-store",
