@@ -58,13 +58,19 @@ describe("Burnerform SDK transport", () => {
     expect(String(request)).not.toContain(managementKey);
     const headers = new Headers(fetcher.mock.calls[0]?.[1]?.headers);
     expect(headers.get("x-burner-management-key")).toBe(managementKey);
-    expect(headers.get("x-burnerform-client-version")).toBe("0.1.1");
+    expect(headers.get("x-burnerform-client-version")).toBe("0.1.2");
   });
 
   it("maps stable API failures without returning response bodies", async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
       jsonResponse(
-        { error: { code: "rate_limited" } },
+        {
+          error: {
+            code: "rate_limited",
+            message: "The request exceeded an active rate limit.",
+            retry: "Wait before retrying.",
+          },
+        },
         {
           status: 429,
           headers: { "x-correlation-id": "correlation-id" },
@@ -82,6 +88,8 @@ describe("Burnerform SDK transport", () => {
       expect.objectContaining({
         code: "rate_limited",
         correlationId: "correlation-id",
+        description: "The request exceeded an active rate limit.",
+        retry: "Wait before retrying.",
         status: 429,
       }),
     );

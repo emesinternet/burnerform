@@ -142,7 +142,16 @@ describe("autonomous SDK lifecycle", () => {
           keyId: created.creatorPublicKey.keyId,
         });
       }
-      return apiResponse({ error: { code: "unavailable" } }, 404);
+      return apiResponse(
+        {
+          error: {
+            code: "unavailable",
+            message: "The form is unavailable.",
+            retry: "Retry only for a temporary service failure.",
+          },
+        },
+        404,
+      );
     });
     const directory = await temporaryDirectory();
     const secrets = new MemorySecretProvider();
@@ -500,7 +509,16 @@ describe("autonomous SDK lifecycle", () => {
           keyId: created.creatorPublicKey.keyId,
         });
       }
-      return apiResponse({ error: { code: "unavailable" } }, 404);
+      return apiResponse(
+        {
+          error: {
+            code: "unavailable",
+            message: "The form is unavailable.",
+            retry: "Retry only for a temporary service failure.",
+          },
+        },
+        404,
+      );
     });
     const directory = await temporaryDirectory();
     const secrets = new MemorySecretProvider();
@@ -617,7 +635,16 @@ describe("autonomous SDK lifecycle", () => {
           keyId,
         });
       }
-      return apiResponse({ error: { code: "unavailable" } }, 404);
+      return apiResponse(
+        {
+          error: {
+            code: "unavailable",
+            message: "The form is unavailable.",
+            retry: "Retry only for a temporary service failure.",
+          },
+        },
+        404,
+      );
     });
     const exportDirectory = await temporaryDirectory();
     const restoredDirectory = await temporaryDirectory();

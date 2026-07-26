@@ -183,6 +183,8 @@ export const apiV1ErrorSchema = z
     error: z
       .object({
         code: apiV1ErrorCodeSchema,
+        message: z.string().min(1).max(500),
+        retry: z.string().min(1).max(500),
       })
       .strict(),
   })
