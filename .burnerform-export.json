@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "9553ecfaa5d1552730179bc2b975e578b9a36e39",
+  "sourceCommit": "f2f39e54cdedb6adf674adab3e49ed5ad1856327",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -43,7 +43,7 @@
     },
     {
       "path": "docs/compatibility.mdx",
-      "sha256": "f478814a39d9238bc931580a268d167158c4d97897561b559a4b9bf534ba90b7"
+      "sha256": "29664ab0509648d084ad8d440f3ceede0b66d9426a1530044e8e8d234d9bc943"
     },
     {
       "path": "docs/concepts.mdx",

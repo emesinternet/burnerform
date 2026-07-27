@@ -19,11 +19,8 @@ Burnerform versions its network and serialized contracts independently:
 API v1 and response-envelope version 2 are different version namespaces. An API
 version change does not imply a cryptographic format change.
 
-Version 0.3.0 is a coordinated breaking client release. The create-form request
-no longer accepts `formId`; Burnerform generates a random 128-bit identifier
-and returns it after publication. Upgrade the SDK, MCP server, and skill
-together. Older clients fail compatibility negotiation rather than sending the
-obsolete request shape.
+Burnerform generates a random 128-bit form identifier and returns it after
+publication. Keep the SDK, MCP server, and skill on the same release.
 
 ## Runtime support
 
