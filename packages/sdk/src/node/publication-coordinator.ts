@@ -4,6 +4,7 @@ import { FORM_LIMITS, type FormSchema } from "@burnerform/core/form-schema";
 import { encodeBase64Url, randomBytes } from "@burnerform/core/crypto";
 import { createFormRequest } from "@burnerform/core/contracts/requests";
 import {
+  bindCreatorCustody,
   MemoryCustodyStore,
   provisionCreatorCustody,
   serializeRecoveryFile,
@@ -69,7 +70,6 @@ export async function preparePublication(input: {
 
   return preparedPublishSchema.parse({
     request: createFormRequest.parse({
-      formId,
       idempotencyKey: crypto.randomUUID(),
       schema: input.schema,
       creatorPublicKey: {
@@ -114,14 +114,26 @@ export async function executePublication(
       prepared.publicPassword,
     );
   }
-  await dependencies.custody.put(prepared.custodyRecord);
+  const created = await dependencies.client.createForm(
+    prepared.request,
+    requestOptions,
+  );
+  const bound = await bindCreatorCustody(
+    prepared.custodyRecord,
+    prepared.recoveryFile,
+    prepared.responsePassword,
+    created.formId,
+    dependencies.custody,
+  );
+  if (!bound.recoveryFile)
+    throw new Error("Verified recovery material is required.");
   const recoveryPath = path.join(
     dependencies.recoveryDirectory,
     prepared.recoveryFileName,
   );
   await writePrivateFile(
     recoveryPath,
-    serializeRecoveryFile(prepared.recoveryFile),
+    serializeRecoveryFile(bound.recoveryFile),
   );
   const verified = await unlockRecoveryFile(
     JSON.parse(await readFile(recoveryPath, "utf8")),
@@ -132,13 +144,9 @@ export async function executePublication(
     throw new Error("Recovery verification failed.");
   }
 
-  const created = await dependencies.client.createForm(
-    prepared.request,
-    requestOptions,
-  );
   await dependencies.rememberPublishedForm({
     alias,
-    formId: prepared.request.formId,
+    formId: created.formId,
     keyId: prepared.request.creatorPublicKey.keyId,
     responsePasswordSecret: prepared.responsePasswordSecret,
     publicPasswordSecret: prepared.publicPasswordSecret,

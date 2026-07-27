@@ -42,7 +42,7 @@ function apiResponse(value: unknown, status = 200) {
     headers: {
       "content-type": "application/json",
       "burnerform-api-version": "v1",
-      "burnerform-supported-client-range": ">=0.1.0 <1.0.0",
+      "burnerform-supported-client-range": ">=0.3.0 <1.0.0",
     },
   });
 }
@@ -50,6 +50,7 @@ function apiResponse(value: unknown, status = 200) {
 describe("autonomous SDK lifecycle", () => {
   it("publishes, restarts, decrypts, mutates, and burns without returning secrets", async () => {
     let created: CreateFormRequest | undefined;
+    const createdFormId = "00112233445566778899aabbccddeeff";
     let burned = false;
     let activeMutations = 0;
     let maximumConcurrentMutations = 0;
@@ -61,7 +62,7 @@ describe("autonomous SDK lifecycle", () => {
         created = JSON.parse(String(init?.body)) as CreateFormRequest;
         return apiResponse(
           {
-            formId: created.formId,
+            formId: createdFormId,
             expiresAt: created.expiresAt,
             replayed: false,
           },
@@ -78,7 +79,7 @@ describe("autonomous SDK lifecycle", () => {
           },
           await importPublicKey(created.creatorPublicKey.value),
           {
-            formId: created.formId,
+            formId: createdFormId,
             schemaHash,
             schemaVersion: 1,
             keyId: created.creatorPublicKey.keyId,
@@ -245,7 +246,7 @@ describe("autonomous SDK lifecycle", () => {
       if (attempts === 1) throw new TypeError("connection reset");
       return apiResponse(
         {
-          formId: request.formId,
+          formId: "11223344556677889900aabbccddeeff",
           expiresAt: request.expiresAt,
           replayed: true,
         },
@@ -303,7 +304,7 @@ describe("autonomous SDK lifecycle", () => {
       const request = JSON.parse(String(init?.body)) as CreateFormRequest;
       return apiResponse(
         {
-          formId: request.formId,
+          formId: "22334455667788990011aabbccddeeff",
           expiresAt: request.expiresAt,
           replayed: false,
         },
@@ -371,7 +372,7 @@ describe("autonomous SDK lifecycle", () => {
       const request = JSON.parse(String(init?.body)) as CreateFormRequest;
       return apiResponse(
         {
-          formId: request.formId,
+          formId: "33445566778899001122aabbccddeeff",
           expiresAt: request.expiresAt,
           replayed: attempts > 1,
         },
@@ -471,7 +472,7 @@ describe("autonomous SDK lifecycle", () => {
         created = JSON.parse(String(init?.body)) as CreateFormRequest;
         return apiResponse(
           {
-            formId: created.formId,
+            formId: "44556677889900112233aabbccddeeff",
             expiresAt: created.expiresAt,
             replayed: false,
           },

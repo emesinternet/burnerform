@@ -37,7 +37,6 @@ const creatorPublicKey = z
 
 export const createFormRequest = z
   .object({
-    formId: random128IdSchema,
     idempotencyKey: z.string().uuid(),
     schema: formSchema,
     creatorPublicKey,

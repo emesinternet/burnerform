@@ -9,7 +9,9 @@ open for seven days or 100 responses.”
 2. If password protection was not specified, ask the operator to choose open or
    password-protected access.
 3. `publish_form` with `publicAccess: "open"` or `"password"`.
-4. Return the public URL and alias, and offer `open_management` without calling
+4. Burnerform assigns the public form address and binds it to verified local
+   custody.
+5. Return the public URL and alias, and offer `open_management` without calling
    it automatically.
 
 ## Password-protected public form

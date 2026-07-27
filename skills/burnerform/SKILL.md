@@ -22,9 +22,9 @@ HTTP requests, cryptography, passwords, management keys, or recovery files.
 6. Return the public URL and alias. Mention that `open_management` is available,
    but do not call it unless the operator asks.
 
-Autonomous publication generates protected local custody and verifies recovery
-material before succeeding. Do not ask the operator to create, paste, or store
-those secrets.
+Autonomous publication generates protected local custody, binds it to the
+server-generated form address, and verifies recovery material before
+succeeding. Do not ask the operator to create, paste, or store those secrets.
 
 ## Monitor and read
 

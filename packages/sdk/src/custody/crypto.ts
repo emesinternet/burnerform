@@ -23,6 +23,7 @@ import type {
   UnlockedCustody,
 } from "./types";
 import type { CustodyStore } from "./store";
+import { creatorCustodyRecordSchema } from "./validation";
 
 interface PortableCustody {
   privateKeyPkcs8: string;
@@ -72,6 +73,10 @@ export interface ProvisionResult {
   publicKey: string;
   managementKey: string;
   wrappedResponseKey?: WrappedSecret;
+  recoveryFile?: RecoveryFile;
+}
+export interface BoundCustody {
+  record: CreatorCustodyRecord;
   recoveryFile?: RecoveryFile;
 }
 
@@ -202,6 +207,49 @@ export async function provisionCreatorCustody(
       record.mode === "shared_password" ? record.wrappedResponseKey : undefined,
     recoveryFile,
   };
+}
+
+export async function bindCreatorCustody(
+  record: CreatorCustodyRecord,
+  recoveryFile: RecoveryFile | undefined,
+  recoveryPassword: string | undefined,
+  formId: string,
+  store: CustodyStore,
+): Promise<BoundCustody> {
+  const boundRecord = creatorCustodyRecordSchema.parse({ ...record, formId });
+  let boundRecoveryFile: RecoveryFile | undefined;
+
+  if (recoveryFile) {
+    if (!recoveryPassword) throw new Error("Recovery password is required");
+    const source = recoveryFileSchema.parse(recoveryFile);
+    const value = portableCustodySchema.parse(
+      await unwrapJson<unknown>(source.wrappedCustody, recoveryPassword),
+    );
+    if (value.recoveryMetadata) {
+      const expected = canonicalRecoveryMetadata(source);
+      if (JSON.stringify(value.recoveryMetadata) !== JSON.stringify(expected))
+        throw new Error("Recovery metadata failed authentication");
+    }
+    boundRecoveryFile = {
+      ...source,
+      formId,
+      wrappedCustody: await wrapJson(
+        {
+          ...value,
+          recoveryMetadata: {
+            formId,
+            keyId: source.keyId,
+            publicKey: source.publicKey,
+            createdAt: source.createdAt,
+          },
+        },
+        recoveryPassword,
+      ),
+    };
+  }
+
+  await store.put(boundRecord);
+  return { record: boundRecord, recoveryFile: boundRecoveryFile };
 }
 
 async function unlockPortable(
