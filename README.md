@@ -98,6 +98,7 @@ Burnerform narrows the amount of trust placed in the service:
 - Decryption and CSV generation happen locally.
 - Management keys stay out of URLs, logs, and persisted plaintext.
 - Passwords and private recovery material remain in local custody.
+- Form IDs are random, server-generated, and never selected by callers.
 - Expiry and burn delete responses, sessions, public content, and wrapped key
   material.
 

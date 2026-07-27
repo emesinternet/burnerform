@@ -108,6 +108,11 @@ inside the authenticated wrapped payload and must match the outer values during
 restore. Keep the recovery file and its separate password in different private
 locations.
 
+During publication, clients prepare provisional custody first. Burnerform
+generates the random 128-bit form ID on the server. The client then rewraps the
+recovery payload so the returned ID appears in both the outer metadata and its
+authenticated inner copy before the file is saved.
+
 Restore locally, verify the P-256 key pair, then authenticate the recovered
 management key against the live form before persisting custody.
 

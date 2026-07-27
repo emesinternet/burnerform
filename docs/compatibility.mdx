@@ -10,7 +10,7 @@ Burnerform versions its network and serialized contracts independently:
 | Contract              | Current line | Compatibility boundary                           |
 | --------------------- | ------------ | ------------------------------------------------ |
 | HTTPS API             | v1           | Clients advertise their version on every request |
-| TypeScript SDK        | 0.x          | API v1 currently accepts `>=0.1.0 <1.0.0`        |
+| TypeScript SDK        | 0.x          | API v1 currently accepts `>=0.3.0 <1.0.0`        |
 | Local MCP server      | 0.x          | Keep it on the same release as the SDK and skill |
 | Canonical form schema | 1            | Builder, SDK, MCP, API, and renderers share it   |
 | Response envelope     | 2            | Separate from API v1                             |
@@ -18,6 +18,12 @@ Burnerform versions its network and serialized contracts independently:
 
 API v1 and response-envelope version 2 are different version namespaces. An API
 version change does not imply a cryptographic format change.
+
+Version 0.3.0 is a coordinated breaking client release. The create-form request
+no longer accepts `formId`; Burnerform generates a random 128-bit identifier
+and returns it after publication. Upgrade the SDK, MCP server, and skill
+together. Older clients fail compatibility negotiation rather than sending the
+obsolete request shape.
 
 ## Runtime support
 
@@ -35,7 +41,7 @@ Linux uses a private persistent `BURNERFORM_DATA_DIR` and a unique
 SDK and raw HTTPS clients send:
 
 ```http
-X-Burnerform-Client-Version: 0.2.0
+X-Burnerform-Client-Version: 0.3.0
 ```
 
 Every successful API response includes the API version and supported client
@@ -69,7 +75,7 @@ version or supported range.
     together. Do not run old and new processes against one custody directory.
 
     ```bash
-    VERSION="0.2.0"
+    VERSION="0.3.0"
     pnpm add --global "@burnerform/mcp@$VERSION"
     pnpm add "@burnerform/sdk@$VERSION"
     ```

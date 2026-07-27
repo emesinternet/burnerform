@@ -225,7 +225,7 @@ export class Burnerform {
     return {
       alias: draft.alias,
       publicUrl: new URL(
-        `/f/${prepared.request.formId}`,
+        `/f/${created.formId}`,
         this.client.baseUrl,
       ).toString(),
       expiresAt: created.expiresAt,

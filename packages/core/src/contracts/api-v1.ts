@@ -9,13 +9,13 @@ import {
 import { random128IdSchema } from "./requests";
 
 export const API_V1 = "v1" as const;
-export const API_V1_CLIENT_RANGE = ">=0.1.0 <1.0.0" as const;
+export const API_V1_CLIENT_RANGE = ">=0.3.0 <1.0.0" as const;
 
 export function isApiV1ClientVersionSupported(version: string): boolean {
   const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
   if (!match) return false;
   const [, major, minor] = match.map(Number);
-  return major === 0 && minor >= 1;
+  return major === 0 && minor >= 3;
 }
 
 export const API_V1_ERROR_CODES = [
@@ -23,7 +23,6 @@ export const API_V1_ERROR_CODES = [
   "burn_confirmation_required",
   "creation_disabled",
   "form_closed",
-  "form_id_unavailable",
   "internal_error",
   "invalid_confirmation",
   "invalid_creator_public_key",
@@ -73,11 +72,6 @@ export const API_V1_ERRORS = {
     status: "409",
     cause: "The form reached its response or storage limit while submitting.",
     retry: "Do not retry unless the creator raises the response limit.",
-  },
-  form_id_unavailable: {
-    status: "409",
-    cause: "The requested form ID is already reserved.",
-    retry: "Generate a new random form ID and retry.",
   },
   idempotency_conflict: {
     status: "409",
