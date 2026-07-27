@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "355f18f312dc501170b96fa10c3b0e681e9dc5a8",
+  "sourceCommit": "3a4171d2b566fbf17562c600e4088e625efbc2fa",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -334,8 +334,12 @@
       "sha256": "a6af93713e8b875b192d7982685ca65b30a7843215954fcc1ee85dd33c297a9f"
     },
     {
+      "path": "public/brand/social-share.png",
+      "sha256": "2d67a39177a11d8d1d8fff653a3e6dd21dc7ec868399370146b7130d265ea402"
+    },
+    {
       "path": "README.md",
-      "sha256": "1dd802a7ede60225276c6270c0e398cb88fe618b9c1dbc0681455696bca82f52"
+      "sha256": "56284de88162c5fe0e917cb99381f84ccb73328feddd1cc5107ea57703777817"
     },
     {
       "path": "scripts/build-package-candidates.ts",
