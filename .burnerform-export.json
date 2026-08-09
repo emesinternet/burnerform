@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "f2f39e54cdedb6adf674adab3e49ed5ad1856327",
+  "sourceCommit": "0f582505612ee572de950d9b3ac5093c8a4b8bd2",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -187,7 +187,7 @@
     },
     {
       "path": "packages/mcp/package.json",
-      "sha256": "7c4e6425dc4c70692c397b42526609d902e24ea19eeb65348fb24d9210998b04"
+      "sha256": "2ae5f860e7bd28fca9f7f670961fc6b909674cc9d24d5a208861455e2f7151e9"
     },
     {
       "path": "packages/mcp/README.md",
@@ -319,11 +319,11 @@
     },
     {
       "path": "pnpm-lock.yaml",
-      "sha256": "4dd262fa2b5174c28cf28db47eb990ae9d37144407b533f40463d5881e589f90"
+      "sha256": "1724fe8151af2ccb1bbb95af49e5b840d4d42a1d48f01dd702eae093a1c29393"
     },
     {
       "path": "pnpm-workspace.yaml",
-      "sha256": "f006099db3e911ab0b643d4a3c31a6136ca6a270ff10e22b4419b167451fa4bc"
+      "sha256": "46913feb3e8f9055575ee858f4c243dc400679ff10a7abe37217ddac7a396228"
     },
     {
       "path": "prettier.config.mjs",
