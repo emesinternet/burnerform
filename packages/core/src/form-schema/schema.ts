@@ -3,6 +3,85 @@ import { formImageSchema } from "./branding";
 import { formFieldSchema } from "./fields";
 import { FORM_LIMITS } from "./limits";
 
+function validateFormFieldCollection(
+  fields: Array<z.infer<typeof formFieldSchema>>,
+  context: z.RefinementCtx,
+) {
+  const seen = new Set<string>();
+  for (const [index, field] of fields.entries()) {
+    if (seen.has(field.id)) {
+      context.addIssue({
+        code: "custom",
+        path: [index, "id"],
+        message: "Field IDs must be unique",
+      });
+    }
+    seen.add(field.id);
+
+    const optionGroups: Array<
+      ["options" | "rows" | "columns", Array<{ id: string; label: string }>]
+    > = [];
+    if ("options" in field) optionGroups.push(["options", field.options]);
+    if ("rows" in field) optionGroups.push(["rows", field.rows]);
+    if ("columns" in field) optionGroups.push(["columns", field.columns]);
+    for (const [property, entries] of optionGroups) {
+      const optionIds = new Set<string>();
+      entries.forEach((entry, optionIndex) => {
+        if (optionIds.has(entry.id)) {
+          context.addIssue({
+            code: "custom",
+            path: [index, property, optionIndex, "id"],
+            message: "Option IDs must be unique within a field",
+          });
+        }
+        optionIds.add(entry.id);
+      });
+    }
+
+    if (field.type !== "multiple_choice") continue;
+    if (
+      field.minSelections !== undefined &&
+      field.maxSelections !== undefined &&
+      field.minSelections > field.maxSelections
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: [index, "minSelections"],
+        message: "Minimum selections must not exceed maximum selections",
+      });
+    }
+    const available = Math.min(
+      FORM_LIMITS.maxOptions,
+      field.options.length + (field.allowOther ? 1 : 0),
+    );
+    if (field.minSelections !== undefined && field.minSelections > available) {
+      context.addIssue({
+        code: "custom",
+        path: [index, "minSelections"],
+        message: "Minimum selections exceed the available choices",
+      });
+    }
+    if (field.maxSelections !== undefined && field.maxSelections > available) {
+      context.addIssue({
+        code: "custom",
+        path: [index, "maxSelections"],
+        message: "Maximum selections exceed the available choices",
+      });
+    }
+  }
+}
+
+export const formFieldCollectionSchema = z
+  .array(formFieldSchema)
+  .max(FORM_LIMITS.maxFields)
+  .superRefine(validateFormFieldCollection);
+
+export const formFieldsSchema = z
+  .array(formFieldSchema)
+  .min(1)
+  .max(FORM_LIMITS.maxFields)
+  .superRefine(validateFormFieldCollection);
+
 export const formSchema = z
   .object({
     version: z.literal(1),
@@ -18,79 +97,10 @@ export const formSchema = z
       .max(FORM_LIMITS.maxDescriptionLength)
       .optional(),
     formImage: formImageSchema.optional(),
-    fields: z.array(formFieldSchema).min(1).max(FORM_LIMITS.maxFields),
+    fields: formFieldsSchema,
   })
   .strict()
   .superRefine((value, context) => {
-    const seen = new Set<string>();
-    for (const [index, field] of value.fields.entries()) {
-      if (seen.has(field.id)) {
-        context.addIssue({
-          code: "custom",
-          path: ["fields", index, "id"],
-          message: "Field IDs must be unique",
-        });
-      }
-      seen.add(field.id);
-
-      const optionGroups: Array<
-        ["options" | "rows" | "columns", Array<{ id: string; label: string }>]
-      > = [];
-      if ("options" in field) optionGroups.push(["options", field.options]);
-      if ("rows" in field) optionGroups.push(["rows", field.rows]);
-      if ("columns" in field) optionGroups.push(["columns", field.columns]);
-      for (const [property, entries] of optionGroups) {
-        const optionIds = new Set<string>();
-        entries.forEach((entry, optionIndex) => {
-          if (optionIds.has(entry.id)) {
-            context.addIssue({
-              code: "custom",
-              path: ["fields", index, property, optionIndex, "id"],
-              message: "Option IDs must be unique within a field",
-            });
-          }
-          optionIds.add(entry.id);
-        });
-      }
-
-      if (field.type !== "multiple_choice") continue;
-      if (
-        field.minSelections !== undefined &&
-        field.maxSelections !== undefined &&
-        field.minSelections > field.maxSelections
-      ) {
-        context.addIssue({
-          code: "custom",
-          path: ["fields", index, "minSelections"],
-          message: "Minimum selections must not exceed maximum selections",
-        });
-      }
-      const available = Math.min(
-        FORM_LIMITS.maxOptions,
-        field.options.length + (field.allowOther ? 1 : 0),
-      );
-      if (
-        field.minSelections !== undefined &&
-        field.minSelections > available
-      ) {
-        context.addIssue({
-          code: "custom",
-          path: ["fields", index, "minSelections"],
-          message: "Minimum selections exceed the available choices",
-        });
-      }
-      if (
-        field.maxSelections !== undefined &&
-        field.maxSelections > available
-      ) {
-        context.addIssue({
-          code: "custom",
-          path: ["fields", index, "maxSelections"],
-          message: "Maximum selections exceed the available choices",
-        });
-      }
-    }
-
     if (
       new TextEncoder().encode(JSON.stringify(value)).byteLength >
       FORM_LIMITS.maxSchemaBytes

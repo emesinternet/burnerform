@@ -7,14 +7,15 @@ description: Version boundaries, supported runtimes, and safe Burnerform upgrade
 
 Burnerform versions its network and serialized contracts independently:
 
-| Contract              | Current line | Compatibility boundary                           |
-| --------------------- | ------------ | ------------------------------------------------ |
-| HTTPS API             | v1           | Clients advertise their version on every request |
-| TypeScript SDK        | 0.x          | API v1 currently accepts `>=0.3.0 <1.0.0`        |
-| Local MCP server      | 0.x          | Keep it on the same release as the SDK and skill |
-| Canonical form schema | 1            | Builder, SDK, MCP, API, and renderers share it   |
-| Response envelope     | 2            | Separate from API v1                             |
-| Recovery file         | 1            | Validated before any custody is stored           |
+| Contract              | Current line | Compatibility boundary                             |
+| --------------------- | ------------ | -------------------------------------------------- |
+| HTTPS API             | v1           | Clients advertise their version on every request   |
+| TypeScript SDK        | 0.x          | API v1 currently accepts `>=0.3.0 <1.0.0`          |
+| Local MCP server      | 0.x          | Keep it on the same release as the SDK and skill   |
+| Browser WebMCP        | Draft API    | Native browser support or Chrome origin trial only |
+| Canonical form schema | 1            | Builder, SDK, MCP, API, and renderers share it     |
+| Response envelope     | 2            | Separate from API v1                               |
+| Recovery file         | 1            | Validated before any custody is stored             |
 
 API v1 and response-envelope version 2 are different version namespaces. An API
 version change does not imply a cryptographic format change.
@@ -38,7 +39,7 @@ Linux uses a private persistent `BURNERFORM_DATA_DIR` and a unique
 SDK and raw HTTPS clients send:
 
 ```http
-X-Burnerform-Client-Version: 0.3.0
+X-Burnerform-Client-Version: 0.4.0
 ```
 
 Every successful API response includes the API version and supported client
@@ -72,7 +73,7 @@ version or supported range.
     together. Do not run old and new processes against one custody directory.
 
     ```bash
-    VERSION="0.3.0"
+    VERSION="0.4.0"
     pnpm add --global "@burnerform/mcp@$VERSION"
     pnpm add "@burnerform/sdk@$VERSION"
     ```
@@ -120,3 +121,8 @@ handling live forms.
 The canonical [OpenAPI 3.1 document](/openapi.json) covers the HTTP contract.
 The [MCP tool reference](/docs/mcp/tools) and [Burnerform skill](/docs/skill)
 cover the agent contract.
+
+The [Browser WebMCP guide](/docs/webmcp) covers the current-page tool contract.
+WebMCP is progressive enhancement. Keep the visible HTML controls and the
+semantic browser workflow available for browsers that do not expose the native
+API.
