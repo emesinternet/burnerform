@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "0f582505612ee572de950d9b3ac5093c8a4b8bd2",
+  "sourceCommit": "c802fc8273f15fdb01c9e8d5ea2aa048fb602be3",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -43,7 +43,7 @@
     },
     {
       "path": "docs/compatibility.mdx",
-      "sha256": "29664ab0509648d084ad8d440f3ceede0b66d9426a1530044e8e8d234d9bc943"
+      "sha256": "1d088dd34eb36f2d1351889e02d21c0b020c70286193287490163e4b45cefd09"
     },
     {
       "path": "docs/concepts.mdx",
@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/mcp.mdx",
-      "sha256": "caef267d9937f2e0086e2f6079fb198b5c541e6db1c5c2e320d147e9eb3d2126"
+      "sha256": "1e3a09883de29871ad4014453338841ae4d1d81043db67ca715c8923579445c1"
     },
     {
       "path": "docs/recovery.mdx",
@@ -95,7 +95,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "b7e01226204648f3c560611acb2673afe5dcc5d5a474291a371a393122648581"
+      "sha256": "3862fda592673c794e8ed55da019e772bd8dad6a7c4e1df900766fc1da3caeae"
     },
     {
       "path": "packages/core/LICENSE",
@@ -103,7 +103,7 @@
     },
     {
       "path": "packages/core/package.json",
-      "sha256": "b93f84c742ba92b629c4fdd8b3659fbde0069d68fa0b2571f0fa1927f861ffa7"
+      "sha256": "06fc840fcbbc486efa0828d657b02818b7494d84e4186591c2f264b7b2d6ac3e"
     },
     {
       "path": "packages/core/README.md",
@@ -167,7 +167,7 @@
     },
     {
       "path": "packages/core/src/form-schema/schema.ts",
-      "sha256": "80f93b701694f423bf1502a4772524e3013319abbea87369875da06a43f9eb52"
+      "sha256": "ef8181c20a926f39bfa9b04c02015549f7269691c87f5e3426c7ae7796a0d316"
     },
     {
       "path": "packages/core/src/form-schema/utilities.ts",
@@ -179,7 +179,7 @@
     },
     {
       "path": "packages/core/src/version.ts",
-      "sha256": "e23b81b77e4a304f9ad5268612978de74b0c8b677d3123c6e0442bc5a66b2239"
+      "sha256": "b8ca6a1fe5bd1084cf2c1a53b54e7c7fd3d1627df9212925812c124266fb6e77"
     },
     {
       "path": "packages/mcp/LICENSE",
@@ -187,7 +187,7 @@
     },
     {
       "path": "packages/mcp/package.json",
-      "sha256": "2ae5f860e7bd28fca9f7f670961fc6b909674cc9d24d5a208861455e2f7151e9"
+      "sha256": "725bed51e19109c357faaa1d6421656dcae0abde8db45a0319dd334324532fd3"
     },
     {
       "path": "packages/mcp/README.md",
@@ -219,7 +219,7 @@
     },
     {
       "path": "packages/sdk/package.json",
-      "sha256": "4d4b1d56cb37b1c9cc1e8ddc8e013c4b39c0f475fcf390d03332977a56fca185"
+      "sha256": "9934df73fafe23334a44630bdf644eb55fe2af92934b5f7e7c50d7a704575eaa"
     },
     {
       "path": "packages/sdk/README.md",
@@ -419,7 +419,7 @@
     },
     {
       "path": "tests/unit/sdk-client.test.ts",
-      "sha256": "9bc14a8acafc5813f4c680c58a61b94975deccbdb7b5504b4a18868972c29d5b"
+      "sha256": "994b0cb304635aa66bd6a52945e06e509fefac4e80fec56f414fad50e84304e7"
     },
     {
       "path": "tsconfig.json",

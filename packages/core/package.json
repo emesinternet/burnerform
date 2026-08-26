@@ -1,6 +1,6 @@
 {
   "name": "@burnerform/core",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": false,
   "description": "Canonical Burnerform schemas, contracts, and cryptography.",
   "license": "Apache-2.0",
