@@ -25,15 +25,3 @@ export function randomBytes(length: number): Uint8Array {
 export function asArrayBuffer(bytes: Uint8Array): ArrayBuffer {
   return bytes.slice().buffer as ArrayBuffer;
 }
-
-export function concatBytes(...arrays: Uint8Array[]): Uint8Array {
-  const result = new Uint8Array(
-    arrays.reduce((sum, item) => sum + item.byteLength, 0),
-  );
-  let offset = 0;
-  for (const array of arrays) {
-    result.set(array, offset);
-    offset += array.byteLength;
-  }
-  return result;
-}

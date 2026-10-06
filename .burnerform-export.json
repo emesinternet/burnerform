@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "c802fc8273f15fdb01c9e8d5ea2aa048fb602be3",
+  "sourceCommit": "c910175eb5e82a258098558688be69621421b166",
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -43,7 +43,7 @@
     },
     {
       "path": "docs/compatibility.mdx",
-      "sha256": "1d088dd34eb36f2d1351889e02d21c0b020c70286193287490163e4b45cefd09"
+      "sha256": "ed08ade59070cc98e7f10f4bbf08ca66fa269841844018e8530a5e3af43fb976"
     },
     {
       "path": "docs/concepts.mdx",
@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/mcp.mdx",
-      "sha256": "1e3a09883de29871ad4014453338841ae4d1d81043db67ca715c8923579445c1"
+      "sha256": "01e7a37aff1f4e731e32ce258a70b14277217e9638e7e327beec3dffe4e173f6"
     },
     {
       "path": "docs/recovery.mdx",
@@ -95,7 +95,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "3862fda592673c794e8ed55da019e772bd8dad6a7c4e1df900766fc1da3caeae"
+      "sha256": "bbca401b8b1a6e684c7a0b7d3497f22f0427c3583bce50d9f5854448eb0cfbc7"
     },
     {
       "path": "packages/core/LICENSE",
@@ -103,7 +103,7 @@
     },
     {
       "path": "packages/core/package.json",
-      "sha256": "06fc840fcbbc486efa0828d657b02818b7494d84e4186591c2f264b7b2d6ac3e"
+      "sha256": "cb3e2878aecb2631c96c793be83bb050bc1d013c49ddd0ead6ed6ff4456b085f"
     },
     {
       "path": "packages/core/README.md",
@@ -127,7 +127,7 @@
     },
     {
       "path": "packages/core/src/crypto/encoding.ts",
-      "sha256": "b27c4f7de9dafd525c34bd11899d67c79b1cd59a1aa7694bf52d28464b894d68"
+      "sha256": "e6704028d981e2cd15e1967baa0b9550061a97b0dd3fb1f504a071dbbd029266"
     },
     {
       "path": "packages/core/src/crypto/envelope.ts",
@@ -171,7 +171,7 @@
     },
     {
       "path": "packages/core/src/form-schema/utilities.ts",
-      "sha256": "be3e78c09090f2364669c5e93986b4e7d24738829b49359d1f12b897f9f114f2"
+      "sha256": "928677c178226593d6da748f61aba50343f71a4d8ff665bf35e95991cd45022b"
     },
     {
       "path": "packages/core/src/index.ts",
@@ -179,7 +179,7 @@
     },
     {
       "path": "packages/core/src/version.ts",
-      "sha256": "b8ca6a1fe5bd1084cf2c1a53b54e7c7fd3d1627df9212925812c124266fb6e77"
+      "sha256": "37128cb964c4ba2dea96fe5a4be10f93b3c640383cb74d1c30cecded4f40b176"
     },
     {
       "path": "packages/mcp/LICENSE",
@@ -187,7 +187,7 @@
     },
     {
       "path": "packages/mcp/package.json",
-      "sha256": "725bed51e19109c357faaa1d6421656dcae0abde8db45a0319dd334324532fd3"
+      "sha256": "dd1741fa65bd7a8e31f8f5bc46ed8c1757c7ef3792ce6d70284d92caf6556e90"
     },
     {
       "path": "packages/mcp/README.md",
@@ -199,7 +199,7 @@
     },
     {
       "path": "packages/mcp/src/cli.ts",
-      "sha256": "22b2dd43d76dd16b2b1da24559a4b55ecfad5a6e42aa30a0a097b480f208b2b0"
+      "sha256": "43f1a8f41ee09d5020a66fdff4cea088dcb33fcd3cdb75ca5f351a05181f7afb"
     },
     {
       "path": "packages/mcp/src/index.ts",
@@ -207,7 +207,7 @@
     },
     {
       "path": "packages/mcp/src/server.ts",
-      "sha256": "7560f87374b0b5f00af37f473d71314157b331a810c66bc30ba58953a8785ec0"
+      "sha256": "c66d10d0425b43245639d8220c9dc230d6b4cfc25aba136200185a3c80179cb0"
     },
     {
       "path": "packages/mcp/src/tool-registry.ts",
@@ -219,7 +219,7 @@
     },
     {
       "path": "packages/sdk/package.json",
-      "sha256": "9934df73fafe23334a44630bdf644eb55fe2af92934b5f7e7c50d7a704575eaa"
+      "sha256": "756b13b819ce3253cf88c87a31265cde3a4bef828980238c5c6b623a53fa144a"
     },
     {
       "path": "packages/sdk/README.md",
@@ -311,7 +311,7 @@
     },
     {
       "path": "packages/sdk/src/node/publication-coordinator.ts",
-      "sha256": "dd43e1e1d7852895bf122e1bf0adb4995bf9d77c5e8a81ed3cbcae2724040b1b"
+      "sha256": "c2c44701b4d7c4672acef79dfaf35f68d444b222924da5714ed05bb9d3990614"
     },
     {
       "path": "packages/sdk/src/node/secret-provider.ts",
@@ -319,11 +319,11 @@
     },
     {
       "path": "pnpm-lock.yaml",
-      "sha256": "1724fe8151af2ccb1bbb95af49e5b840d4d42a1d48f01dd702eae093a1c29393"
+      "sha256": "6ab3bd9d04995c80bd179e40d926444bab958fb143d969e1ba547d8df8bce970"
     },
     {
       "path": "pnpm-workspace.yaml",
-      "sha256": "46913feb3e8f9055575ee858f4c243dc400679ff10a7abe37217ddac7a396228"
+      "sha256": "784f3daaf8c2827528f05585c7eedacd231cc1890405a9c1de8e21463bf2a898"
     },
     {
       "path": "prettier.config.mjs",
@@ -351,7 +351,7 @@
     },
     {
       "path": "scripts/check-doc-contracts.ts",
-      "sha256": "40167fbbe5829a9cfe4ee273a3ef763f27c286784578a78d753564032acef901"
+      "sha256": "4142a3129898e627fad250b9b77940bfdb3ec1ddd0e0998e4b18f7f94634db34"
     },
     {
       "path": "scripts/check-package-contents.ts",
@@ -366,8 +366,12 @@
       "sha256": "7c7a4e2be0fe031c7c426ebfe3f072f1603dc84cb08ce43ff21b18178d9b5fe3"
     },
     {
+      "path": "scripts/files-under.ts",
+      "sha256": "dcb4fbdd10610ba78ba2225d5d72ad03aa558710811cde4f9eb3c8233334489c"
+    },
+    {
       "path": "scripts/smoke-mcp.ts",
-      "sha256": "24008ef9bc5862a59c6e2abdf08ac85e188ce1a2c5e5dd2e75f23c30e1e61fa6"
+      "sha256": "157f8a31d7b862e7d8b892b884b5691431d4088bbc1abc1344483c2db6ccd309"
     },
     {
       "path": "scripts/verify-mcp-lifecycle.ts",
@@ -419,7 +423,7 @@
     },
     {
       "path": "tests/unit/sdk-client.test.ts",
-      "sha256": "994b0cb304635aa66bd6a52945e06e509fefac4e80fec56f414fad50e84304e7"
+      "sha256": "d7c3caa758537d0f878877d4eb0ea95a5a9ae929b2b295195fa5ce993d310bde"
     },
     {
       "path": "tsconfig.json",

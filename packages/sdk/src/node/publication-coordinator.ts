@@ -14,6 +14,7 @@ import {
 import type { BurnerformClient, BurnerformRequestOptions } from "../client";
 import { writePrivateFile } from "./atomic-file";
 import type { EncryptedFileCustodyStore } from "./file-custody-store";
+import { secretName } from "./autonomous-state";
 import {
   preparedPublishSchema,
   type EncryptedOperationJournal,
@@ -38,10 +39,6 @@ interface PublicationDependencies {
   journal: EncryptedOperationJournal;
   recoveryDirectory: string;
   rememberPublishedForm(entry: PublishedRegistryEntry): Promise<void>;
-}
-
-function secretName(alias: string, kind: "response" | "public") {
-  return `form:${alias}:${kind}`;
 }
 
 export async function preparePublication(input: {

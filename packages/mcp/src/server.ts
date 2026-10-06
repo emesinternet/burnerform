@@ -1,12 +1,8 @@
 import {
   McpServer,
+  type ServerContext,
   type ToolCallback,
-} from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { RequestHandlerExtra } from "@modelcontextprotocol/sdk/shared/protocol.js";
-import type {
-  ServerNotification,
-  ServerRequest,
-} from "@modelcontextprotocol/sdk/types.js";
+} from "@modelcontextprotocol/server";
 import { BURNERFORM_CLIENT_VERSION } from "@burnerform/core";
 import {
   BurnerformToolHandlers,
@@ -45,8 +41,11 @@ export function createBurnerformMcpServer(
   for (const definition of burnerformToolDefinitions) {
     const callback: ToolCallback<typeof definition.inputSchema> = async (
       input: unknown,
-      extra: RequestHandlerExtra<ServerRequest, ServerNotification>,
-    ) => toolResult(await handlers.call(definition.name, input, extra.signal));
+      extra: ServerContext,
+    ) =>
+      toolResult(
+        await handlers.call(definition.name, input, extra.mcpReq.signal),
+      );
     server.registerTool(
       definition.name,
       {

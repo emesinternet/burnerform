@@ -1,18 +1,8 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { BURNERFORM_CLIENT_VERSION } from "@burnerform/core";
 import { burnerformToolDefinitions } from "@burnerform/mcp";
-
-async function filesUnder(directory: string): Promise<string[]> {
-  const entries = await readdir(directory, { withFileTypes: true });
-  const nested = await Promise.all(
-    entries.map((entry) => {
-      const target = path.join(directory, entry.name);
-      return entry.isDirectory() ? filesUnder(target) : [target];
-    }),
-  );
-  return nested.flat();
-}
+import { filesUnder } from "./files-under";
 
 async function main() {
   const failures: string[] = [];

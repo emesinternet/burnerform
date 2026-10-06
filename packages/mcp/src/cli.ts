@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { defaultBurnerformDataDirectory } from "@burnerform/sdk/node";
 import {
   createBrokerCaller,
@@ -29,13 +29,12 @@ async function main() {
     return;
   }
   await ensureBroker(options);
-  const server = createBurnerformMcpServer(createBrokerCaller(options));
-  const shutdown = async () => {
-    await server.close();
-  };
-  process.once("SIGINT", () => void shutdown());
-  process.once("SIGTERM", () => void shutdown());
-  await server.connect(new StdioServerTransport());
+  const handle = serveStdio(() =>
+    createBurnerformMcpServer(createBrokerCaller(options)),
+  );
+  const shutdown = () => void handle.close();
+  process.once("SIGINT", shutdown);
+  process.once("SIGTERM", shutdown);
 }
 
 main().catch((error: unknown) => {
