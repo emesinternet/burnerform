@@ -1,19 +1,11 @@
 import type { FormField } from "./fields";
 import { FORM_LIMITS } from "./limits";
 import { parseFormSchema, type FormSchema } from "./schema";
+import { encodeBase64Url } from "../crypto/encoding";
 
 export function generateFieldId(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(16));
-  return bytesToBase64Url(bytes);
-}
-
-function bytesToBase64Url(bytes: Uint8Array): string {
-  let binary = "";
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/u, "");
+  return encodeBase64Url(bytes);
 }
 
 export async function hashFormSchema(schema: FormSchema): Promise<string> {
@@ -22,7 +14,7 @@ export async function hashFormSchema(schema: FormSchema): Promise<string> {
     "SHA-256",
     new TextEncoder().encode(canonical),
   );
-  return bytesToBase64Url(new Uint8Array(digest));
+  return encodeBase64Url(new Uint8Array(digest));
 }
 
 export function isContentField(
